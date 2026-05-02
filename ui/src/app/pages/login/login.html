@@ -1,0 +1,43 @@
+<div class="login-page">
+
+  <!-- Left Branding -->
+  <div class="brand-side">
+    <h1>TaxFlow AI</h1>
+    <p>Smart Email Routing for Tax Operations</p>
+  </div>
+
+  <!-- Right Login -->
+  <div class="login-side">
+
+    <div class="login-card">
+
+      <h2>Login</h2>
+      <p>Access your workspace</p>
+
+      <input
+        type="text"
+        placeholder="Username"
+        [(ngModel)]="username"
+      />
+
+      <input
+        type="password"
+        placeholder="Password"
+        [(ngModel)]="password"
+      />
+
+      <button (click)="login()">Login</button>
+
+      <div class="divider"></div>
+
+      <p class="query-text">Need to submit a query?</p>
+
+      <button class="secondary-btn" routerLink="/query">
+        Submit Query
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

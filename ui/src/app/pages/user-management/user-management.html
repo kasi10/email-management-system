@@ -1,0 +1,81 @@
+<div class="dashboard-page">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">TaxFlow AI</div>
+
+    <nav class="menu">
+      <a routerLink="/dashboard" class="menu-item">Dashboard</a>
+      <a routerLink="/user-management" class="menu-item active">User Management</a>
+    </nav>
+
+    <button class="logout-btn">Logout</button>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+
+    <div class="topbar">
+      <div>
+        <h1>User Management</h1>
+        <p>Manage system users</p>
+      </div>
+
+      <button class="add-btn" (click)="openModal()">+ Add User</button>
+    </div>
+
+    <section class="table-card">
+
+      <table>
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Display Name</th>
+            <th>Role</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>admin</td>
+            <td>Admin User</td>
+            <td>Admin</td>
+            <td><span class="status active">Active</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </section>
+
+  </main>
+
+  <!-- Modal -->
+  <div class="modal-overlay" *ngIf="showModal">
+
+    <div class="modal-box">
+
+      <h2>Add User</h2>
+
+      <input type="text" placeholder="Username" [(ngModel)]="username">
+
+      <input type="text" placeholder="Display Name" [(ngModel)]="displayName">
+
+      <select [(ngModel)]="role">
+        <option>Admin</option>
+        <option>User</option>
+        <option>Tax Team</option>
+      </select>
+
+      <input type="password" placeholder="Password" [(ngModel)]="password">
+
+      <div class="modal-actions">
+        <button class="cancel-btn" (click)="closeModal()">Cancel</button>
+        <button class="save-btn" (click)="saveUser()">Save</button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

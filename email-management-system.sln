@@ -1,0 +1,32 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{D82C56D6-B2CD-F611-9E31-04638F7EC30E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7218997D-3624-D017-E052-9D306D24EF0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailManagementAPI", "api\src\EmailManagementAPI\EmailManagementAPI.csproj", "{38405E78-B9B5-9CD3-AC7A-C8DC3BB36B3A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{38405E78-B9B5-9CD3-AC7A-C8DC3BB36B3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38405E78-B9B5-9CD3-AC7A-C8DC3BB36B3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38405E78-B9B5-9CD3-AC7A-C8DC3BB36B3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38405E78-B9B5-9CD3-AC7A-C8DC3BB36B3A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7218997D-3624-D017-E052-9D306D24EF0B} = {D82C56D6-B2CD-F611-9E31-04638F7EC30E}
+		{38405E78-B9B5-9CD3-AC7A-C8DC3BB36B3A} = {7218997D-3624-D017-E052-9D306D24EF0B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4BFE7822-0F64-40E5-9BC3-CCB59D0A2770}
+	EndGlobalSection
+EndGlobal

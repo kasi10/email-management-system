@@ -1,0 +1,111 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.login-page {
+  display: flex;
+  height: 100vh;
+  background: #f4f6f8;
+}
+
+/* Left Branding */
+.brand-side {
+  flex: 1;
+  background: linear-gradient(135deg, #0d47a1, #1565c0);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px;
+}
+
+.brand-side h1 {
+  font-size: 52px;
+  margin-bottom: 15px;
+}
+
+.brand-side p {
+  font-size: 20px;
+  opacity: 0.95;
+}
+
+/* Right Side */
+.login-side {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-card {
+  width: 420px;
+  background: white;
+  padding: 45px;
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+.login-card h2 {
+  font-size: 34px;
+  color: #0d47a1;
+  margin-bottom: 10px;
+}
+
+.login-card p {
+  color: #666;
+  margin-bottom: 25px;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 18px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.login-card input:focus {
+  outline: none;
+  border-color: #1565c0;
+}
+
+.login-card button {
+  width: 100%;
+  padding: 15px;
+  background: #1565c0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 17px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.login-card button:hover {
+  background: #0d47a1;
+}
+
+.divider {
+  height: 1px;
+  background: #eee;
+  margin: 25px 0;
+}
+
+.query-text {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.secondary-btn {
+  background: white !important;
+  color: #1565c0 !important;
+  border: 1px solid #1565c0 !important;
+}
+
+.secondary-btn:hover {
+  background: #f2f7ff !important;
+}
