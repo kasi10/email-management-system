@@ -1,9 +1,9 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
-
+import { UserService } from '../../user.service';
+import { AuthService } from '../../auth.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -15,36 +15,37 @@ export class DashboardComponent {
 
   users: any[] = [];
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private cdr: ChangeDetectorRef
-  ) {}
+ constructor(
+  private userService: UserService,
+  private authService: AuthService,
+  private router: Router,
+  private cdr: ChangeDetectorRef
+) {}
 
   ngOnInit() {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      this.router.navigate(['/']);
+      return;
+    }
+
     this.loadUsers();
   }
 
   loadUsers() {
-    const token = localStorage.getItem('token');
-
-    this.http.get<any[]>('http://localhost:5285/api/Users', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }).subscribe({
+    this.userService.getUsers().subscribe({
       next: (res) => {
         this.users = [...res];
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.log(err);
+        console.error('Error fetching users:', err);
       }
     });
   }
 
-  logout() {
-    localStorage.removeItem('token');
-    this.router.navigate(['/']);
-  }
+ logout() {
+  this.authService.logout();
+}
 }

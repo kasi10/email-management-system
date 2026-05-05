@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-user-management',
@@ -19,6 +20,8 @@ export class UserManagementComponent {
   role = 'User';
   password = '';
 
+  constructor(private authService: AuthService) {}
+
   openModal() {
     this.showModal = true;
   }
@@ -30,5 +33,9 @@ export class UserManagementComponent {
   saveUser() {
     alert('User Added (next step = API)');
     this.closeModal();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }
