@@ -20,4 +20,15 @@ export class UserService {
       }
     });
   }
+
+  createUser(user: any) {
+  const token = localStorage.getItem('token');
+
+  return this.http.post<any>(this.apiUrl, user, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    responseType: 'json' // 🔥 IMPORTANT FIX
+  });
+}
 }

@@ -24,6 +24,16 @@
       <button class="add-btn" (click)="openModal()">+ Add User</button>
     </div>
 
+    <!-- ✅ Success Message -->
+    <div *ngIf="successMessage" class="success-msg">
+      {{ successMessage }}
+    </div>
+
+    <!-- ❌ Error Message -->
+    <div *ngIf="errorMessage" class="error-msg">
+      {{ errorMessage }}
+    </div>
+
     <section class="table-card">
 
       <table>
@@ -37,12 +47,14 @@
         </thead>
 
         <tbody>
-          <tr>
-            <td>admin</td>
-            <td>Admin User</td>
-            <td>Admin</td>
-            <td><span class="status active">Active</span></td>
-          </tr>
+          <tr *ngFor="let user of users">
+  <td>{{ user.username }}</td>
+  <td>{{ user.displayName }}</td>
+  <td>{{ user.role }}</td>
+  <td>
+    <span class="status active">Active</span>
+  </td>
+</tr>
         </tbody>
       </table>
 
@@ -51,7 +63,7 @@
   </main>
 
   <!-- Modal -->
-  <div class="modal-overlay" *ngIf="showModal">
+  <div class="modal-overlay" [style.display]="showModal ? 'flex' : 'none'">
 
     <div class="modal-box">
 
@@ -62,9 +74,8 @@
       <input type="text" placeholder="Display Name" [(ngModel)]="displayName">
 
       <select [(ngModel)]="role">
-        <option>Admin</option>
-        <option>User</option>
-        <option>Tax Team</option>
+        <option value="DocCollections">Doc Collections</option>
+        <option value="IRSNotices">IRS Notices</option>
       </select>
 
       <input type="password" placeholder="Password" [(ngModel)]="password">

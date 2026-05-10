@@ -1,6 +1,6 @@
 using System.Linq;
 using EmailManagementAPI.Data;
-using EmailManagementAPI.Repositories;
+using EmailManagementAPI.Models;
 
 namespace EmailManagementAPI.Repositories
 {
@@ -23,6 +23,16 @@ namespace EmailManagementAPI.Repositories
                     u.Role
                 })
                 .ToList();
+        }
+
+        public void AddUser(User user)
+        {
+            _context.Users.Add(user);
+            _context.SaveChanges();
+        }
+        public User GetByUsername(string username)
+        {
+              return _context.Users.FirstOrDefault(u => u.Username == username);
         }
     }
 }

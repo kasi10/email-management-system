@@ -18,17 +18,30 @@ export class LoginComponent {
   constructor(private http: HttpClient, private router: Router) {}
 
   login() {
-    const data = {
-      username: this.username,
-      password: this.password
-    };
+  const data = {
+    username: this.username,
+    password: this.password
+  };
 
-    this.http.post<any>('http://localhost:5285/api/Auth/login', data)
-      .subscribe(res => {
-        localStorage.setItem('token', res.token);
-        this.router.navigateByUrl('/dashboard', { replaceUrl: true });
-      }, err => {
-        alert("Login failed");
-      });
+  this.http.post<any>('http://localhost:5285/api/Auth/login', data)
+   .subscribe(res => {
+
+  localStorage.setItem('token', res.token);
+
+  const role = res.role;
+
+  if (role === 'Admin') {
+    this.router.navigateByUrl('/dashboard', {
+      replaceUrl: true
+    });
+  } else {
+    this.router.navigateByUrl('/common-dashboard', {
+      replaceUrl: true
+    });
   }
+
+}, err => {
+  alert("Login failed");
+});
+}
 }

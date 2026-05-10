@@ -20,18 +20,25 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public IActionResult Login(LoginDto dto)
-    {
-        var user = _context.Users.FirstOrDefault(u =>
-            u.Username == dto.Username && u.PasswordHash == dto.Password);
+public IActionResult Login(LoginDto dto)
+{
+    var user = _context.Users.FirstOrDefault(u => u.Username == dto.Username);
 
-        if (user == null || user.Role != "Admin")
-            return Unauthorized("Invalid credentials");
+    if (user == null)
+        return Unauthorized("Invalid credentials");
 
-        var token = GenerateToken(user);
+    // 🔥 FIX: verify hashed password
+    if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
+        return Unauthorized("Invalid credentials");
 
-        return Ok(new { token });
-    }
+    // ❗ REMOVE this if you want non-admin users to login
+    // if (user.Role != "Admin")
+    //     return Unauthorized("Only admin allowed");
+
+    var token = GenerateToken(user);
+
+    return Ok(new { token, role = user.Role }); // 🔥 also return role
+}
     [Authorize(Roles = "Admin")]
     [HttpGet("secure")]
     public IActionResult Secure()
