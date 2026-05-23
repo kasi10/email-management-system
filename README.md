@@ -1,3 +1,4 @@
+
 # TaxFlow AI – Email Management System
 
 ## 📌 Overview
@@ -138,3 +139,4 @@ This project is being developed following structured guidelines including:
 * Clean frontend structure
 * Proper Git workflow (feature branches)
 * Documentation and testing standards
+
