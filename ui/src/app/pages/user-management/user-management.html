@@ -1,88 +1,289 @@
 <div class="dashboard-page">
 
-  <!-- Sidebar -->
+  <!-- SIDEBAR -->
+
   <aside class="sidebar">
-    <div class="logo">TaxFlow AI</div>
+
+    <div class="logo">
+      TaxFlow AI
+    </div>
 
     <nav class="menu">
-      <a routerLink="/dashboard" class="menu-item">Dashboard</a>
-      <a routerLink="/user-management" class="menu-item active">User Management</a>
+
+      <a
+        routerLink="/dashboard"
+        class="menu-item">
+
+        Dashboard
+
+      </a>
+
+      <a
+        routerLink="/user-management"
+        class="menu-item active">
+
+        User Management
+
+      </a>
+
     </nav>
 
-    <button class="logout-btn" (click)="logout()">Logout</button>
+    <button
+      class="logout-btn"
+      (click)="logout()">
+
+      Logout
+
+    </button>
+
   </aside>
 
-  <!-- Main -->
+  <!-- MAIN -->
+
   <main class="main-content">
 
     <div class="topbar">
+
       <div>
+
         <h1>User Management</h1>
-        <p>Manage system users</p>
+
+        <p>
+          Manage system users
+        </p>
+
       </div>
 
-      <button class="add-btn" (click)="openModal()">+ Add User</button>
+      <button
+        class="add-btn"
+        (click)="openModal()">
+
+        + Add User
+
+      </button>
+
     </div>
 
-    <!-- ✅ Success Message -->
-    <div *ngIf="successMessage" class="success-msg">
+    <!-- SUCCESS -->
+
+    <div
+      *ngIf="successMessage"
+      class="success-msg">
+
       {{ successMessage }}
+
     </div>
 
-    <!-- ❌ Error Message -->
-    <div *ngIf="errorMessage" class="error-msg">
+    <!-- ERROR -->
+
+    <div
+      *ngIf="errorMessage"
+      class="error-msg">
+
       {{ errorMessage }}
+
     </div>
+
+    <!-- TABLE -->
 
     <section class="table-card">
 
       <table>
+
         <thead>
+
           <tr>
+
             <th>Username</th>
+
             <th>Display Name</th>
+
             <th>Role</th>
+
+            <th>Department</th>
+
             <th>Status</th>
+
           </tr>
+
         </thead>
 
         <tbody>
+
           <tr *ngFor="let user of users">
-  <td>{{ user.username }}</td>
-  <td>{{ user.displayName }}</td>
-  <td>{{ user.role }}</td>
-  <td>
-    <span class="status active">Active</span>
-  </td>
-</tr>
+
+            <td>
+              {{ user.username }}
+            </td>
+
+            <td>
+              {{ user.displayName }}
+            </td>
+
+            <td>
+              {{ user.role }}
+            </td>
+
+            <td>
+
+              <span *ngIf="user.departmentId === 1">
+                IRS Notices
+              </span>
+
+              <span *ngIf="user.departmentId === 2">
+                Doc Collections
+              </span>
+
+              <span *ngIf="!user.departmentId">
+                -
+              </span>
+
+            </td>
+
+            <td>
+
+              <span class="status active">
+
+                Active
+
+              </span>
+
+            </td>
+
+          </tr>
+
         </tbody>
+
       </table>
 
     </section>
 
   </main>
 
-  <!-- Modal -->
-  <div class="modal-overlay" [style.display]="showModal ? 'flex' : 'none'">
+  <!-- MODAL -->
+
+  <div
+    class="modal-overlay"
+    [style.display]="showModal ? 'flex' : 'none'">
 
     <div class="modal-box">
 
       <h2>Add User</h2>
 
-      <input type="text" placeholder="Username" [(ngModel)]="username">
+      <!-- USERNAME -->
 
-      <input type="text" placeholder="Display Name" [(ngModel)]="displayName">
+      <input
+        type="text"
+        placeholder="Username"
+        [(ngModel)]="username"
+        [class.error-input]="modalErrorMessage"
+      />
 
-      <select [(ngModel)]="role">
-        <option value="DocCollections">Doc Collections</option>
-        <option value="IRSNotices">IRS Notices</option>
+      <!-- DISPLAY NAME -->
+
+      <input
+        type="text"
+        placeholder="Display Name"
+        [(ngModel)]="displayName"
+        [class.error-input]="modalErrorMessage"
+      />
+
+      <!-- ROLE -->
+
+      <select
+        [(ngModel)]="role"
+        [class.error-input]="modalErrorMessage"
+      >
+
+        <option value="" disabled selected>
+
+          Select Role
+
+        </option>
+
+        <option value="Admin">
+
+          Admin
+
+        </option>
+
+        <option value="Employee">
+
+          Employee
+
+        </option>
+
       </select>
 
-      <input type="password" placeholder="Password" [(ngModel)]="password">
+      <!-- DEPARTMENT -->
+
+      <select
+        *ngIf="role === 'Employee'"
+        [(ngModel)]="departmentId"
+        [class.error-input]="modalErrorMessage"
+      >
+
+        <option
+          [ngValue]="0"
+          disabled>
+
+          Select Department
+
+        </option>
+
+        <option [ngValue]="1">
+
+          IRS Notices
+
+        </option>
+
+        <option [ngValue]="2">
+
+          Doc Collections
+
+        </option>
+
+      </select>
+
+      <!-- PASSWORD -->
+
+      <input
+        type="password"
+        placeholder="Password"
+        [(ngModel)]="password"
+        [class.error-input]="modalErrorMessage"
+      />
+
+      <!-- ERROR -->
+
+      <div
+        *ngIf="modalErrorMessage"
+        class="error-msg">
+
+        {{ modalErrorMessage }}
+
+      </div>
+
+      <!-- ACTIONS -->
 
       <div class="modal-actions">
-        <button class="cancel-btn" (click)="closeModal()">Cancel</button>
-        <button class="save-btn" (click)="saveUser()">Save</button>
+
+        <button
+          class="cancel-btn"
+          (click)="closeModal()">
+
+          Cancel
+
+        </button>
+
+        <button
+          class="save-btn"
+          (click)="saveUser()">
+
+          Save
+
+        </button>
+
       </div>
 
     </div>

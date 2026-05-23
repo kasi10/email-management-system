@@ -187,3 +187,11 @@ th{
   margin-bottom: 10px;
   font-weight: 500;
 }
+.error-input {
+  border: 1px solid #d32f2f !important;
+  background: #fff5f5;
+}
+select,
+select option {
+  color: #666;
+}

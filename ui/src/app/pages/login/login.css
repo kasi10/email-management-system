@@ -109,3 +109,22 @@
 .secondary-btn:hover {
   background: #f2f7ff !important;
 }
+.error-message {
+  color: #d32f2f;
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.error-input {
+  border: 1px solid #d32f2f !important;
+  background: #fff5f5;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 12px;
+  font-weight: 500;
+}

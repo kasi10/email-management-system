@@ -5,16 +5,29 @@ namespace EmailManagementAPI.Data
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options)
-            : base(options)
+        public AppDbContext(
+            DbContextOptions<AppDbContext> options
+        ) : base(options)
         {
         }
 
+        // TABLES
+
         public DbSet<User> Users { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        public DbSet<Query> Queries { get; set; }
+
+        public DbSet<Department> Departments { get; set; }
+
+        protected override void OnModelCreating(
+            ModelBuilder modelBuilder
+        )
         {
             base.OnModelCreating(modelBuilder);
+
+            // =========================
+            // USER CONFIGURATION
+            // =========================
 
             modelBuilder.Entity<User>(entity =>
             {
@@ -44,6 +57,56 @@ namespace EmailManagementAPI.Data
 
                 entity.Property(u => u.CreatedTs)
                     .HasDefaultValueSql("GETUTCDATE()");
+
+                // USER → DEPARTMENT
+
+                entity.HasOne(u => u.Department)
+                    .WithMany(d => d.Users)
+                    .HasForeignKey(u => u.DepartmentId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // =========================
+            // DEPARTMENT CONFIGURATION
+            // =========================
+
+            modelBuilder.Entity<Department>(entity =>
+            {
+                entity.HasKey(d => d.DepartmentId);
+
+                entity.Property(d => d.DepartmentName)
+                    .IsRequired()
+                    .HasMaxLength(100);
+            });
+
+            // =========================
+            // QUERY CONFIGURATION
+            // =========================
+
+            modelBuilder.Entity<Query>(entity =>
+            {
+                entity.HasKey(q => q.Id);
+
+                entity.Property(q => q.SenderEmail)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(q => q.Subject)
+                    .IsRequired()
+                    .HasMaxLength(300);
+
+                entity.Property(q => q.Body)
+                    .IsRequired();
+
+                entity.Property(q => q.CreatedTs)
+                    .HasDefaultValueSql("GETUTCDATE()");
+
+                // QUERY → DEPARTMENT
+
+                entity.HasOne(q => q.AssignedDepartment)
+                    .WithMany(d => d.Queries)
+                    .HasForeignKey(q => q.AssignedDepartmentId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
         }
     }
