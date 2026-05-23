@@ -15,16 +15,22 @@
       <p>Access your workspace</p>
 
       <input
-        type="text"
-        placeholder="Username"
-        [(ngModel)]="username"
+      type="text"
+      placeholder="Username"
+      [(ngModel)]="username"
+      [class.error-input]="errorMessage"
       />
 
       <input
         type="password"
         placeholder="Password"
         [(ngModel)]="password"
+        [class.error-input]="errorMessage"
       />
+
+      <p class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </p>
 
       <button (click)="login()">Login</button>
 
@@ -32,8 +38,8 @@
 
       <p class="query-text">Need to submit a query?</p>
 
-      <button class="secondary-btn" routerLink="/query">
-        Submit Query
+      <button class="query-btn" (click)="goToQueryPage()">
+         Submit Query
       </button>
 
     </div>

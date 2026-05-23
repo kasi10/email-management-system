@@ -28,13 +28,20 @@ namespace EmailManagementAPI.Services
 
     var hashedPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
-   var user = new User
+  var user = new User
 {
     Username = dto.Username,
+
     DisplayName = dto.DisplayName,
+
     Role = dto.Role,
+
+    DepartmentId = dto.DepartmentId,
+
     PasswordHash = hashedPassword,
+
     IsActive = true,
+
     CreatedTs = DateTime.UtcNow
 };
 

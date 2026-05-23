@@ -1,79 +1,177 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+
 using EmailManagementAPI.Data;
 using EmailManagementAPI.Models;
+
 using Microsoft.AspNetCore.Authorization;
-[ApiController]
-[Route("api/[controller]")]
-public class AuthController : ControllerBase
+
+namespace EmailManagementAPI.Controllers
 {
-    private readonly AppDbContext _context;
-    private readonly IConfiguration _config;
-
-    public AuthController(AppDbContext context, IConfiguration config)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AuthController : ControllerBase
     {
-        _context = context;
-        _config = config;
-    }
+        private readonly AppDbContext _context;
 
-    [HttpPost("login")]
-public IActionResult Login(LoginDto dto)
-{
-    var user = _context.Users.FirstOrDefault(u => u.Username == dto.Username);
+        private readonly IConfiguration _config;
 
-    if (user == null)
-        return Unauthorized("Invalid credentials");
-
-    // 🔥 FIX: verify hashed password
-    if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
-        return Unauthorized("Invalid credentials");
-
-    // ❗ REMOVE this if you want non-admin users to login
-    // if (user.Role != "Admin")
-    //     return Unauthorized("Only admin allowed");
-
-    var token = GenerateToken(user);
-
-    return Ok(new { token, role = user.Role }); // 🔥 also return role
-}
-    [Authorize(Roles = "Admin")]
-    [HttpGet("secure")]
-    public IActionResult Secure()
-    {
-        return Ok("You are authorized 🔐");
-    }
-
-    private string GenerateToken(User user)
-    {
-        var key = new SymmetricSecurityKey(
-         Encoding.ASCII.GetBytes(_config["Jwt:Key"]!)
-    );
-
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        var claims = new[]
+        public AuthController(
+            AppDbContext context,
+            IConfiguration config)
         {
-            new Claim(ClaimTypes.Name, user.Username),
-            new Claim(ClaimTypes.Role, user.Role)
-        };
+            _context = context;
 
-        var token = new JwtSecurityToken(
-            issuer: _config["Jwt:Issuer"],
-            audience: _config["Jwt:Audience"],
-            claims: claims,
-            expires: DateTime.UtcNow.AddHours(2),
-            signingCredentials: creds
-        );
+            _config = config;
+        }
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        // =========================
+        // LOGIN
+        // =========================
+
+        [HttpPost("login")]
+        public IActionResult Login(
+            LoginDto dto)
+        {
+            var user =
+                _context.Users
+                    .FirstOrDefault(
+                        u => u.Username == dto.Username
+                    );
+
+            if (user == null)
+            {
+                return Unauthorized(
+                    "Invalid credentials"
+                );
+            }
+
+            // VERIFY HASHED PASSWORD
+
+            if (!BCrypt.Net.BCrypt.Verify(
+                    dto.Password,
+                    user.PasswordHash
+                ))
+            {
+                return Unauthorized(
+                    "Invalid credentials"
+                );
+            }
+
+            var token =
+                GenerateToken(user);
+
+            return Ok(new
+            {
+                token,
+
+                role = user.Role,
+
+                departmentId =
+                    user.DepartmentId
+            });
+        }
+
+        // =========================
+        // SECURE TEST
+        // =========================
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("secure")]
+        public IActionResult Secure()
+        {
+            return Ok(
+                "You are authorized 🔐"
+            );
+        }
+
+        // =========================
+        // GENERATE JWT TOKEN
+        // =========================
+
+        private string GenerateToken(
+            User user)
+        {
+            var key =
+                new SymmetricSecurityKey(
+
+                    Encoding.ASCII.GetBytes(
+                        _config["Jwt:Key"]!
+                    )
+                );
+
+            var creds =
+                new SigningCredentials(
+                    key,
+                    SecurityAlgorithms.HmacSha256
+                );
+
+            var claims =
+                new List<Claim>
+                {
+                    new Claim(
+                        ClaimTypes.Name,
+                        user.Username
+                    ),
+
+                    new Claim(
+                        ClaimTypes.Role,
+                        user.Role
+                    )
+                };
+
+            // ADD DEPARTMENT CLAIM
+
+            if (user.DepartmentId.HasValue)
+            {
+                claims.Add(
+
+                    new Claim(
+                        "DepartmentId",
+                        user.DepartmentId
+                            .Value
+                            .ToString()
+                    )
+                );
+            }
+
+            var token =
+                new JwtSecurityToken(
+
+                    issuer:
+                        _config["Jwt:Issuer"],
+
+                    audience:
+                        _config["Jwt:Audience"],
+
+                    claims:
+                        claims,
+
+                    expires:
+                        DateTime.UtcNow
+                            .AddHours(2),
+
+                    signingCredentials:
+                        creds
+                );
+
+            return new JwtSecurityTokenHandler()
+                .WriteToken(token);
+        }
     }
-}
 
-public class LoginDto
-{
-    public string? Username { get; set; }
-    public string? Password { get; set; }
+    // =========================
+    // LOGIN DTO
+    // =========================
+
+    public class LoginDto
+    {
+        public string? Username { get; set; }
+
+        public string? Password { get; set; }
+    }
 }

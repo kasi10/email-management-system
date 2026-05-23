@@ -1,0 +1,348 @@
+<div class="dashboard-page">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div class="logo">
+      TaxFlow AI
+    </div>
+
+    <nav class="menu">
+
+      <a
+        routerLink="/dashboard"
+        class="menu-item">
+
+        Dashboard
+
+      </a>
+
+      <a
+        routerLink="/user-management"
+        class="menu-item">
+
+        User Management
+
+      </a>
+
+      <a
+        routerLink="/queries"
+        class="menu-item active">
+
+        Queries
+
+      </a>
+
+    </nav>
+
+    <button
+      class="logout-btn"
+      (click)="logout()">
+
+      Logout
+
+    </button>
+
+  </aside>
+
+  <!-- MAIN -->
+
+  <main class="main-content">
+
+    <div class="topbar">
+
+      <div>
+
+        <h1>Queries</h1>
+
+        <p>
+          Enterprise AI Query Management
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- STATS -->
+
+    <div class="stats-grid">
+
+      <section class="stat-card">
+
+        <h3>Total Queries</h3>
+
+        <span>
+          {{ queries.length }}
+        </span>
+
+      </section>
+
+      <section class="stat-card review-card">
+
+        <h3>Manual Review</h3>
+
+        <span>
+          {{ manualReviewQueries.length }}
+        </span>
+
+      </section>
+
+    </div>
+
+    <!-- FILTER TABS -->
+
+    <div class="query-tabs">
+
+      <button
+        class="tab-btn"
+        [class.active-tab]="activeTab === 'all'"
+        (click)="setTab('all')">
+
+        All Queries
+
+      </button>
+
+      <button
+        class="tab-btn review-tab"
+        [class.active-tab]="activeTab === 'review'"
+        (click)="setTab('review')">
+
+        Needs Manual Review
+
+      </button>
+
+    </div>
+
+    <!-- SEARCH -->
+
+    <div class="search-bar">
+
+      <input
+        type="text"
+        placeholder="Search queries..."
+        (input)="searchQueries($event)"
+      />
+
+    </div>
+
+    <!-- TABLE -->
+
+    <section class="table-card">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Sender</th>
+            <th>Subject</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Confidence</th>
+            <th>Assigned Team</th>
+            <th>View</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let query of displayedQueries;
+              trackBy: trackByQuery
+            ">
+
+            <td>
+              {{ query.senderEmail }}
+            </td>
+
+            <td>
+              {{ query.subject }}
+            </td>
+
+            <td>
+
+              <span
+                class="priority"
+                [ngClass]="(query.priority || '').toLowerCase()">
+
+                {{ query.priority }}
+
+              </span>
+
+            </td>
+
+            <td>
+
+              <span
+                class="status"
+                [ngClass]="(query.status || '').toLowerCase()">
+
+                {{ query.status }}
+
+              </span>
+
+            </td>
+
+            <td>
+
+              {{ query.confidenceScore || 0 }}%
+
+            </td>
+
+            <td>
+
+              {{ query.assignedTeam }}
+
+            </td>
+
+            <td>
+
+              <button
+                class="eye-btn"
+                (click)="selectQuery(query)">
+
+                👁
+
+              </button>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </section>
+
+  </main>
+
+  <!-- MODAL -->
+
+  <div
+    class="modal-overlay"
+    *ngIf="selectedQuery">
+
+    <div class="email-modal">
+
+      <div class="modal-header">
+
+        <h2>Email Details</h2>
+
+        <button
+          class="close-btn"
+          (click)="closeModal()">
+
+          ✖
+
+        </button>
+
+      </div>
+
+      <div class="modal-content">
+
+        <p>
+
+          <strong>Sender:</strong>
+
+          {{ selectedQuery?.senderEmail }}
+
+        </p>
+
+        <p>
+
+          <strong>Subject:</strong>
+
+          {{ selectedQuery?.subject }}
+
+        </p>
+
+        <p>
+
+          <strong>Priority:</strong>
+
+          {{ selectedQuery?.priority }}
+
+        </p>
+
+        <p>
+
+          <strong>Status:</strong>
+
+          {{ selectedQuery?.status }}
+
+        </p>
+
+        <p>
+
+          <strong>AI Confidence:</strong>
+
+          {{ selectedQuery?.confidenceScore }}%
+
+        </p>
+
+        <p>
+
+          <strong>Assigned Team:</strong>
+
+          {{ selectedQuery?.assignedTeam }}
+
+        </p>
+
+        <!-- MANUAL ROUTING -->
+
+        <div
+          *ngIf="selectedQuery?.needsManualReview"
+          class="manual-review-box">
+
+          <h3>
+            Manual Routing Required
+          </h3>
+
+          <select #deptSelect>
+
+            <option value="1">
+              IRS Notices
+            </option>
+
+            <option value="2">
+              Doc Collections
+            </option>
+
+          </select>
+
+          <button
+            class="route-btn"
+            (click)="manualRoute(
+              selectedQuery.id,
+              deptSelect.value
+            )">
+
+            Route Query
+
+          </button>
+
+        </div>
+
+        <hr>
+
+        <h3>Email Body</h3>
+
+        <div class="email-body">
+
+          {{ selectedQuery?.body }}
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,14 +1,238 @@
-<div class="welcome-page">
+<div class="dashboard-container">
 
-  <div class="welcome-card">
+  <div class="top-bar">
 
-    <h1>Welcome</h1>
-
-    <p>You have successfully logged in.</p>
+    <h1>Common Dashboard</h1>
 
     <button class="logout-btn" (click)="logout()">
       Logout
     </button>
+
+  </div>
+
+  <div class="query-count">
+    Total Queries: {{ queries.length }}
+  </div>
+
+  <!-- PIE CHART -->
+
+  <div class="chart-container">
+
+    <h2>Priority Analytics</h2>
+
+    <canvas id="priorityChart"></canvas>
+
+  </div>
+  <div class="search-bar">
+
+  <input
+    type="text"
+    placeholder="Search emails..."
+    (input)="searchQueries($event)"
+  />
+
+</div>
+
+  <!-- FILTER -->
+
+  <div class="filter-bar">
+
+    <label>Filter by Priority:</label>
+
+    <select (change)="sortQueries($event)">
+
+      <option value="">All</option>
+      <option value="High">High</option>
+      <option value="Medium">Medium</option>
+      <option value="Low">Low</option>
+
+    </select>
+
+  </div>
+
+  <!-- TABLE -->
+
+  <table class="query-table">
+
+    <thead>
+
+      <tr>
+
+        <th>Sender</th>
+        <th>Subject</th>
+        <th>Category</th>
+        <th>Priority</th>
+        <th>Status</th>
+        <th>Team</th>
+        <th>View</th>
+
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      <tr *ngFor="let query of queries">
+
+        <td>{{ query.senderEmail }}</td>
+
+        <td>{{ query.subject }}</td>
+
+        <td>{{ query.category }}</td>
+
+        <td>
+
+          <span
+            class="priority"
+            [ngClass]="query.priority.toLowerCase()">
+
+            {{ query.priority }}
+
+          </span>
+
+        </td>
+
+        <td>
+
+          <span
+            class="status"
+            [ngClass]="query.status.toLowerCase()">
+
+            {{ query.status }}
+
+          </span>
+
+        </td>
+
+        <td>{{ query.assignedTeam }}</td>
+
+        <td>
+
+          <button
+            class="eye-btn"
+            (click)="selectQuery(query)">
+
+            👁
+
+          </button>
+
+        </td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+
+  <!-- MODAL -->
+
+  <div
+    class="modal-overlay"
+    *ngIf="selectedQuery">
+
+    <div class="email-modal">
+
+      <div class="modal-header">
+
+        <h2>Email Details</h2>
+
+        <button
+          class="close-btn"
+          (click)="closeModal()">
+
+          ✖
+
+        </button>
+
+      </div>
+
+      <div class="modal-content">
+
+        <p>
+          <strong>Sender:</strong>
+          {{ selectedQuery.senderEmail }}
+        </p>
+
+        <p>
+          <strong>Subject:</strong>
+          {{ selectedQuery.subject }}
+        </p>
+
+        <p>
+          <strong>Category:</strong>
+          {{ selectedQuery.category }}
+        </p>
+
+        <p>
+
+          <strong>Priority:</strong>
+
+          <span
+            class="priority"
+            [ngClass]="selectedQuery.priority.toLowerCase()">
+
+            {{ selectedQuery.priority }}
+
+          </span>
+
+        </p>
+
+        <div class="status-section">
+
+          <strong>Status:</strong>
+
+          <span
+            class="status"
+            [ngClass]="selectedQuery.status.toLowerCase()">
+
+            {{ selectedQuery.status }}
+
+          </span>
+
+        </div>
+
+        <div class="status-update">
+
+          <label>Update Status:</label>
+
+          <select
+            [value]="selectedQuery.status"
+            (change)="updateStatus($event)">
+
+            <option value="Pending">
+              Pending
+            </option>
+
+            <option value="In Progress">
+              In Progress
+            </option>
+
+            <option value="Finished">
+              Finished
+            </option>
+
+          </select>
+
+        </div>
+
+        <p>
+          <strong>Assigned Team:</strong>
+          {{ selectedQuery.assignedTeam }}
+        </p>
+
+        <hr>
+
+        <h3>Email Body</h3>
+
+        <div class="email-body">
+
+          {{ selectedQuery.body }}
+
+        </div>
+
+      </div>
+
+    </div>
 
   </div>
 
