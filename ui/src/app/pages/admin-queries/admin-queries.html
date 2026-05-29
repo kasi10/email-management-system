@@ -2,7 +2,10 @@
 
   <!-- SIDEBAR -->
 
-  <aside class="sidebar">
+ <aside class="sidebar">
+
+  <!-- ADD THIS WRAPPER DIV -->
+  <div>
 
     <div class="logo">
       TaxFlow AI
@@ -10,41 +13,28 @@
 
     <nav class="menu">
 
-      <a
-        routerLink="/dashboard"
-        class="menu-item">
-
+      <a routerLink="/dashboard" class="menu-item">
         Dashboard
-
       </a>
 
-      <a
-        routerLink="/user-management"
-        class="menu-item">
-
+      <a routerLink="/user-management" class="menu-item">
         User Management
-
       </a>
 
-      <a
-        routerLink="/queries"
-        class="menu-item active">
-
+      <a routerLink="/queries" class="menu-item active">
         Queries
-
       </a>
 
     </nav>
 
-    <button
-      class="logout-btn"
-      (click)="logout()">
+  </div>
+  <!-- END WRAPPER DIV -->
 
-      Logout
+  <button class="logout-btn" (click)="logout()">
+    Logout
+  </button>
 
-    </button>
-
-  </aside>
+</aside>
 
   <!-- MAIN -->
 

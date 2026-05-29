@@ -35,18 +35,23 @@ export class QueryComponent {
       return;
     }
 
-    // Validation
+    /* VALIDATION */
+
     if (
       !this.senderEmail.trim() ||
       !this.subject.trim() ||
       !this.body.trim()
     ) {
 
-      this.errorMessage = 'All fields are mandatory';
+      this.errorMessage =
+        'All fields are required';
+
       this.successMessage = '';
 
       return;
     }
+
+    /* START LOADING */
 
     this.isLoading = true;
 
@@ -64,9 +69,13 @@ export class QueryComponent {
 
       next: () => {
 
+        /* RESET FORM */
+
         this.senderEmail = '';
         this.subject = '';
         this.body = '';
+
+        /* SUCCESS */
 
         this.successMessage =
           'Query submitted successfully';
@@ -74,6 +83,16 @@ export class QueryComponent {
         this.isLoading = false;
 
         this.cdr.detectChanges();
+
+        /* AUTO REMOVE MESSAGE */
+
+        setTimeout(() => {
+
+          this.successMessage = '';
+
+          this.cdr.detectChanges();
+
+        }, 3000);
       },
 
       error: (err) => {
@@ -86,12 +105,22 @@ export class QueryComponent {
         this.isLoading = false;
 
         this.cdr.detectChanges();
+
+        /* AUTO REMOVE ERROR */
+
+        setTimeout(() => {
+
+          this.errorMessage = '';
+
+          this.cdr.detectChanges();
+
+        }, 3000);
       }
     });
   }
 
   goHome() {
 
-    this.router.navigate(['/']);
+    this.router.navigate(['/dashboard']);
   }
 }

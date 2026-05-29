@@ -25,7 +25,18 @@ export class QueryService {
       data
     );
   }
+  // =========================
+// GET ALL QUERIES
+// =========================
 
+getQueries() {
+
+  return this.http.get<any[]>(
+
+    `${this.apiUrl}/admin`
+
+  );
+}
   // =========================
   // GET BY DEPARTMENT
   // =========================

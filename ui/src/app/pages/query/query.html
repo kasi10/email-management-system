@@ -1,83 +1,152 @@
-<div class="query-page">
+<div class="query-layout">
 
-  <!-- LOADING OVERLAY -->
+  <!-- LOADING -->
 
-  <div class="loading-overlay" *ngIf="isLoading">
+  <div
+    class="loading-overlay"
+    *ngIf="isLoading">
 
     <div class="loading-box">
 
       <div class="spinner"></div>
 
-      <h2>AI is classifying your query...</h2>
+      <h2>
+        AI is classifying your query
+      </h2>
 
       <p>
-        Please wait while we process your email
+        Please wait while we process your request
       </p>
 
     </div>
 
   </div>
 
-  <div class="query-card">
+  <!-- CARD -->
 
-    <div class="top-actions">
+  <div class="query-container">
 
-      <button class="home-btn" (click)="goHome()">
-        Home
+    <!-- TOP -->
+
+    <div class="topbar">
+
+      <div>
+
+        <h1>
+          Submit Query
+        </h1>
+
+        <p>
+          AI-powered enterprise email routing
+        </p>
+
+      </div>
+
+      <button
+        class="home-btn"
+        (click)="goHome()">
+
+        Dashboard
+
       </button>
 
     </div>
 
-    <h1>Submit Query</h1>
+    <!-- ALERTS -->
 
-    <p class="subtitle">
-      Submit your tax-related email query
-    </p>
+    <div
+      class="success-msg"
+      *ngIf="successMessage">
 
-    <div class="success-msg" *ngIf="successMessage">
       {{ successMessage }}
+
     </div>
 
-    <div class="error-msg" *ngIf="errorMessage">
+    <div
+      class="error-msg"
+      *ngIf="errorMessage">
+
       {{ errorMessage }}
+
     </div>
 
-    <input
-      type="email"
-      [(ngModel)]="senderEmail"
-      placeholder="Sender Email"
-      [disabled]="isLoading"
-    />
+    <!-- FORM -->
 
-    <input
-      type="text"
-      [(ngModel)]="subject"
-      placeholder="Subject"
-      [disabled]="isLoading"
-    />
+    <div class="form-section">
 
-    <textarea
-      rows="10"
-      [(ngModel)]="body"
-      placeholder="Write your email body here..."
-      [disabled]="isLoading"
-    ></textarea>
+      <!-- EMAIL -->
 
-    <button
-      class="submit-btn"
-      (click)="submitQuery()"
-      [disabled]="isLoading"
-    >
+      <div class="input-group">
 
-      <span *ngIf="!isLoading">
-        Send Query
-      </span>
+        <label>
+          Sender Email
+        </label>
 
-      <span *ngIf="isLoading">
-        Processing...
-      </span>
+        <input
+          type="email"
+          [(ngModel)]="senderEmail"
+          placeholder="john@example.com"
+          [disabled]="isLoading"
+        />
 
-    </button>
+      </div>
+
+      <!-- SUBJECT -->
+
+      <div class="input-group">
+
+        <label>
+          Subject
+        </label>
+
+        <input
+          type="text"
+          [(ngModel)]="subject"
+          placeholder="Enter email subject"
+          [disabled]="isLoading"
+        />
+
+      </div>
+
+      <!-- BODY -->
+
+      <div class="input-group">
+
+        <label>
+          Email Body
+        </label>
+
+        <textarea
+          rows="10"
+          [(ngModel)]="body"
+          placeholder="Write your query details here..."
+          [disabled]="isLoading"
+        ></textarea>
+
+      </div>
+
+      <!-- BUTTON -->
+
+      <button
+        class="submit-btn"
+        (click)="submitQuery()"
+        [disabled]="isLoading">
+
+        <span *ngIf="!isLoading">
+
+          Submit Query
+
+        </span>
+
+        <span *ngIf="isLoading">
+
+          Processing...
+
+        </span>
+
+      </button>
+
+    </div>
 
   </div>
 
