@@ -1,7 +1,8 @@
 import {
   Component,
   OnInit,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  OnDestroy
 } from '@angular/core';
 
 import {
@@ -34,7 +35,7 @@ import {
   styleUrl: './admin-queries.css',
 })
 export class AdminQueriesComponent
-implements OnInit {
+implements OnInit, OnDestroy {
 
   // ALL QUERIES
 
@@ -308,5 +309,9 @@ implements OnInit {
   logout() {
 
     this.authService.logout();
+  }
+
+  ngOnDestroy(): void {
+    this.selectedQuery = null;
   }
 }

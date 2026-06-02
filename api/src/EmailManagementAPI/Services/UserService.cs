@@ -18,34 +18,38 @@ namespace EmailManagementAPI.Services
         }
 
        public void CreateUser(CreateUserDto dto)
-{
-    var existingUser = _repo.GetByUsername(dto.Username);
+        {
+            var existingUser = _repo.GetByUsername(dto.Username);
 
-    if (existingUser != null)
-    {
-        throw new Exception("Username already exists");
-    }
+            if (existingUser != null)
+            {
+                throw new Exception("Username already exists");
+            }
 
-    var hashedPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
-  var user = new User
-{
-    Username = dto.Username,
+        var user = new User
+        {
+            Username = dto.Username,
 
-    DisplayName = dto.DisplayName,
+            DisplayName = dto.DisplayName,
 
-    Role = dto.Role,
+            Role = dto.Role,
 
-    DepartmentId = dto.DepartmentId,
+            DepartmentId = dto.DepartmentId,
 
-    PasswordHash = hashedPassword,
+            PasswordHash = hashedPassword,
 
-    IsActive = true,
+            IsActive = true,
 
-    CreatedTs = DateTime.UtcNow
-};
+            CreatedTs = DateTime.UtcNow
+        };
 
-    _repo.AddUser(user);
-}
+            _repo.AddUser(user);
+        }
+        public void DeleteUser(int id)
+        {
+            _repo.DeleteUser(id);
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace EmailManagementAPI.Data
         public DbSet<Query> Queries { get; set; }
 
         public DbSet<Department> Departments { get; set; }
+        public DbSet<RoutingRule> RoutingRules { get; set; }
 
         protected override void OnModelCreating(
             ModelBuilder modelBuilder

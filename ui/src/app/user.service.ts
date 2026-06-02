@@ -31,4 +31,10 @@ export class UserService {
     responseType: 'json' // 🔥 IMPORTANT FIX
   });
 }
+  deleteUser(id: number) {
+
+    return this.http.delete(
+      `${this.apiUrl}/${id}`
+    );
+  }
 }

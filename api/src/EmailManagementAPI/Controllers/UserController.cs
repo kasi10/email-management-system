@@ -39,11 +39,22 @@ namespace EmailManagementAPI.Controllers
             try
             {
                 _service.CreateUser(dto);
-return Ok(new { message = "User created successfully" });            }
+            return Ok(new { message = "User created successfully" });          
+            }
             catch (System.Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
+        }
+        [HttpDelete("{id}")]
+        public IActionResult DeleteUser(int id)
+        {
+            _service.DeleteUser(id);
+
+            return Ok(new
+            {
+                message = "User deleted successfully"
+            });
         }
     }
 }

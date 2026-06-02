@@ -1,0 +1,199 @@
+<div class="dashboard-page">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div>
+
+            <div class="logo">
+                TaxFlow AI
+            </div>
+
+            <nav class="menu">
+
+                <a routerLink="/dashboard" class="menu-item">
+
+                    Dashboard
+
+                </a>
+
+                <a routerLink="/user-management" class="menu-item">
+
+                    Users
+
+                </a>
+
+                <a routerLink="/queries" class="menu-item">
+
+                    Queries
+
+                </a>
+
+                <a routerLink="/department-management" class="menu-item">
+
+                    Departments
+
+                </a>
+
+                <a routerLink="/routing-rules" class="menu-item active">
+
+                    Routing Rules
+
+                </a>
+
+            </nav>
+
+        </div>
+
+    </aside>
+
+    <!-- MAIN -->
+
+    <main class="main-content">
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>
+                    Routing Rules
+                </h1>
+
+                <p>
+                    Manage custom routing rules
+                </p>
+
+            </div>
+
+            <button class="add-btn" (click)="openModal()">
+
+                + Add Rule
+
+            </button>
+
+        </div>
+
+        <div *ngIf="successMessage" class="success-msg">
+
+            {{ successMessage }}
+
+        </div>
+
+        <div *ngIf="errorMessage" class="error-msg">
+
+            {{ errorMessage }}
+
+        </div>
+
+        <section class="table-card">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Keyword</th>
+
+                        <th>Department</th>
+
+                        <th>Priority</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let rule of rules">
+
+                        <td>
+                            {{ rule.keyword }}
+                        </td>
+
+                        <td>
+                            {{ rule.department }}
+                        </td>
+
+                        <td>
+                            {{ rule.priority }}
+                        </td>
+
+                        <td>
+
+                            <button class="delete-btn" (click)="deleteRule(rule.id)">
+
+                                Delete
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+    <!-- MODAL -->
+
+    <div class="modal-overlay" *ngIf="showModal">
+
+        <div class="modal-box">
+
+            <h2>
+                Add Routing Rule
+            </h2>
+
+            <input type="text" placeholder="Keyword" [(ngModel)]="keyword">
+
+            <input type="text" placeholder="Department" [(ngModel)]="department">
+
+            <select [(ngModel)]="priority">
+
+                <option value="">
+                    Select Priority
+                </option>
+
+                <option value="High">
+                    High
+                </option>
+
+                <option value="Medium">
+                    Medium
+                </option>
+
+                <option value="Low">
+                    Low
+                </option>
+
+            </select>
+
+            <div class="modal-actions">
+
+                <button class="cancel-btn" (click)="closeModal()">
+
+                    Cancel
+
+                </button>
+
+                <button class="save-btn" (click)="saveRule()">
+
+                    Save
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

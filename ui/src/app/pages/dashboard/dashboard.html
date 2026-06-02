@@ -1,8 +1,9 @@
 <div class="dashboard-layout">
 
-  <!-- SIDEBAR -->
+ 
+<!-- SIDEBAR -->
 
-  <aside class="sidebar">
+<aside class="sidebar">
 
   <div>
 
@@ -14,7 +15,8 @@
 
       <a
         routerLink="/dashboard"
-        class="menu-item active">
+        routerLinkActive="active"
+        class="menu-item">
 
         Dashboard
 
@@ -22,6 +24,7 @@
 
       <a
         routerLink="/user-management"
+        routerLinkActive="active"
         class="menu-item">
 
         Users
@@ -29,11 +32,26 @@
       </a>
 
       <a
+        routerLink="/department-management"
+        routerLinkActive="active"
+        class="menu-item">
+
+        Departments
+
+      </a>
+
+      <a
         routerLink="/queries"
+        routerLinkActive="active"
         class="menu-item">
 
         Queries
 
+      </a>
+      <a routerLink="/routing-rules" routerLinkActive="active" class="menu-item">
+      
+        Routing Rules
+      
       </a>
 
     </nav>
@@ -49,6 +67,7 @@
   </button>
 
 </aside>
+
 
   <!-- MAIN -->
 

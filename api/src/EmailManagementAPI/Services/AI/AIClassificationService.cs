@@ -36,6 +36,9 @@ namespace EmailManagementAPI.Services.AI
         {
             var apiKey =
                 _configuration["OpenRouter:ApiKey"];
+                Console.WriteLine("========== OPENROUTER KEY ==========");
+                Console.WriteLine(apiKey);
+                Console.WriteLine("====================================");
 
             // LOAD PROMPT
 

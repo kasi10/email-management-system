@@ -18,9 +18,15 @@ namespace EmailManagementAPI.Repositories
             return _context.Users
                 .Select(u => new
                 {
+                    u.Id,
                     u.Username,
                     u.DisplayName,
-                    u.Role
+                    u.Role,
+                    u.DepartmentId,
+
+                    Department = u.Department != null
+                        ? u.Department.DepartmentName
+                        : null
                 })
                 .ToList();
         }
@@ -30,9 +36,20 @@ namespace EmailManagementAPI.Repositories
             _context.Users.Add(user);
             _context.SaveChanges();
         }
-        public User GetByUsername(string username)
+        public User? GetByUsername(string username)
         {
               return _context.Users.FirstOrDefault(u => u.Username == username);
+        }
+        public void DeleteUser(int id)
+        {
+            var user = _context.Users.Find(id);
+
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+
+                _context.SaveChanges();
+            }
         }
     }
 }

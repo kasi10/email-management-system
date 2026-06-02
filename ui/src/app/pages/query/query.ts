@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { QueryService } from '../../query.service';
   templateUrl: './query.html',
   styleUrl: './query.css'
 })
-export class QueryComponent {
+export class QueryComponent implements OnDestroy {
 
   senderEmail = '';
   subject = '';
@@ -121,6 +121,14 @@ export class QueryComponent {
 
   goHome() {
 
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/']);
+  }
+  ngOnDestroy(): void {
+
+    this.isLoading = false;
+
+    this.successMessage = '';
+
+    this.errorMessage = '';
   }
 }

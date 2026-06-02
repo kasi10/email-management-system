@@ -288,16 +288,7 @@ tr:hover{
 
 /* MODAL */
 
-.modal-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(15,23,42,0.55);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:999;
-  backdrop-filter:blur(10px);
-}
+
 
 .modal-box{
   width:460px;
@@ -647,16 +638,7 @@ td{
 
 /* MODAL */
 
-.modal-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.4);
-  backdrop-filter:blur(4px);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:999;
-}
+
 
 .modal-box{
   width:450px;
@@ -792,4 +774,84 @@ select:focus{
     align-items:flex-start;
     gap:10px;
   }
+}
+.delete-btn {
+  border: none;
+  background: #ef4444;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
+.delete-modal {
+  background: white;
+  width: 380px;
+  padding: 30px;
+  border-radius: 24px;
+  text-align: center;
+}
+
+.delete-modal h2 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #111827;
+}
+
+.delete-modal p {
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+.delete-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+.delete-confirm-btn {
+  border: none;
+  background: #ef4444;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.delete-confirm-btn:hover {
+  background: #dc2626;
+}
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-overlay.ng-leave,
+.modal-overlay.ng-hide {
+  pointer-events: none;
+}
+
+.delete-modal {
+  background: white;
+  width: 380px;
+  padding: 30px;
+  border-radius: 24px;
+  text-align: center;
+  z-index: 10000;
+}
+
+.dashboard-layout {
+  position: relative;
+  z-index: 1;
 }

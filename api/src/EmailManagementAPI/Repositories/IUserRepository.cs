@@ -8,6 +8,7 @@ namespace EmailManagementAPI.Repositories
 
         void AddUser(User user);
 
-         User GetByUsername(string username);
+         User? GetByUsername(string username);
+         void DeleteUser(int id);
     }
 }

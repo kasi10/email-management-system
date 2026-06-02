@@ -1,6 +1,7 @@
 import {
   Component,
   OnInit,
+  OnDestroy,
   ChangeDetectorRef
 } from '@angular/core';
 
@@ -23,6 +24,7 @@ import {
 import {
   UserService
 } from '../../user.service';
+import { DepartmentService } from '../../department.service';
 
 @Component({
   selector: 'app-user-management',
@@ -32,11 +34,12 @@ import {
     FormsModule,
     RouterModule
   ],
+  
   templateUrl: './user-management.html',
   styleUrl: './user-management.css'
 })
 export class UserManagementComponent
-implements OnInit {
+implements OnInit, OnDestroy {
 
   // =========================
   // MODAL
@@ -53,6 +56,7 @@ implements OnInit {
   errorMessage = '';
 
   modalErrorMessage = '';
+  departments: any[] = [];
 
   // =========================
   // USERS
@@ -68,8 +72,6 @@ implements OnInit {
 
   displayName = '';
 
-  role = '';
-
   departmentId = 0;
 
   password = '';
@@ -77,6 +79,7 @@ implements OnInit {
   constructor(
     private authService: AuthService,
     private userService: UserService,
+    private departmentService: DepartmentService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -87,6 +90,7 @@ implements OnInit {
   ngOnInit() {
 
     this.loadUsers();
+    this.loadDepartments();
   }
 
   // =========================
@@ -138,130 +142,120 @@ implements OnInit {
 
   saveUser() {
 
-    // BASIC VALIDATION
+  // BASIC VALIDATION
 
-    if (
-      !this.username.trim()
-      ||
-      !this.displayName.trim()
-      ||
-      !this.role.trim()
-      ||
-      !this.password.trim()
-    ) {
+  if (
+    !this.username.trim()
+    ||
+    !this.displayName.trim()
+    ||
+    !this.password.trim()
+  ) {
 
-      this.modalErrorMessage =
-        'All fields are required';
+    this.modalErrorMessage =
+      'All fields are required';
 
-      this.successMessage = '';
+    this.successMessage = '';
 
-      this.cdr.detectChanges();
+    this.cdr.detectChanges();
 
-      return;
-    }
+    return;
+  }
 
-    // EMPLOYEE VALIDATION
+  // DEPARTMENT VALIDATION
 
-    if (
-      this.role === 'Employee'
-      &&
-      this.departmentId === 0
-    ) {
+  if (this.departmentId === 0) {
 
-      this.modalErrorMessage =
-        'Please select a department';
+    this.modalErrorMessage =
+      'Please select a department';
 
-      this.cdr.detectChanges();
+    this.cdr.detectChanges();
 
-      return;
-    }
+    return;
+  }
 
-    // PAYLOAD
+  // PAYLOAD
 
-    const userData = {
+  const userData = {
 
-      username:
-        this.username,
+    username:
+      this.username,
 
-      displayName:
-        this.displayName,
+    displayName:
+      this.displayName,
 
-      role:
-        this.role,
+    role: 'Employee',
 
-      departmentId:
+    departmentId:
+      this.departmentId,
 
-        this.role === 'Admin'
-        ? null
-        : this.departmentId,
+    password:
+      this.password
+  };
 
-      password:
-        this.password
-    };
+  console.log(
+    'USER PAYLOAD:',
+    userData
+  );
 
-    console.log(
-      'USER PAYLOAD:',
-      userData
-    );
+  // API CALL
 
-    // API CALL
+  this.userService
+    .createUser(userData)
+    .subscribe({
 
-    this.userService
-      .createUser(userData)
-      .subscribe({
+      next: (res: any) => {
 
-        next: (res: any) => {
+        console.log(
+          'API response:',
+          res
+        );
 
-          console.log(
-            'API response:',
-            res
-          );
+        this.successMessage =
+          res.message;
 
-          this.successMessage =
-            res.message;
+        this.modalErrorMessage = '';
 
-          this.modalErrorMessage = '';
+        // RELOAD USERS
 
-          // RELOAD USERS
+        this.loadUsers();
 
-          this.loadUsers();
+        // CLOSE MODAL
 
-          // CLOSE MODAL
+        this.showModal = false;
 
-          this.showModal = false;
+        // RESET
 
-          // RESET
+        this.resetForm();
 
-          this.resetForm();
+        this.cdr.detectChanges();
 
-          this.cdr.detectChanges();
-
-          setTimeout(() => {
-
-            this.successMessage = '';
-
-          }, 3000);
-        },
-
-        error: (err) => {
-
-          console.error(err);
-
-          this.modalErrorMessage =
-            'Failed to create user';
+        setTimeout(() => {
 
           this.successMessage = '';
 
-          this.cdr.detectChanges();
+        }, 3000);
+      },
 
-          setTimeout(() => {
+      error: (err) => {
 
-            this.modalErrorMessage = '';
+        console.error(err);
 
-          }, 3000);
-        }
-      });
-  }
+        this.modalErrorMessage =
+          'Failed to create user';
+
+        this.successMessage = '';
+
+        this.cdr.detectChanges();
+
+        setTimeout(() => {
+
+          this.modalErrorMessage = '';
+
+        }, 3000);
+      }
+    });
+}
 
   // =========================
   // RESET FORM
@@ -269,16 +263,14 @@ implements OnInit {
 
   resetForm() {
 
-    this.username = '';
+  this.username = '';
 
-    this.displayName = '';
+  this.displayName = '';
 
-    this.role = '';
+  this.departmentId = 0;
 
-    this.departmentId = 0;
-
-    this.password = '';
-  }
+  this.password = '';
+}
 
   // =========================
   // LOGOUT
@@ -287,5 +279,80 @@ implements OnInit {
   logout() {
 
     this.authService.logout();
+  }
+ 
+  // =========================
+  // DELETE MODAL
+  // =========================
+
+  showDeleteModal = false;
+
+  selectedUserId: number | null = null;
+
+  openDeleteModal(id: number) {
+
+    this.selectedUserId = id;
+
+    this.showDeleteModal = true;
+  }
+
+  closeDeleteModal() {
+
+    this.showDeleteModal = false;
+
+    this.selectedUserId = null;
+  }
+
+  confirmDeleteUser() {
+
+    if (this.selectedUserId === null) {
+      return;
+    }
+
+    this.userService
+      .deleteUser(this.selectedUserId)
+      .subscribe({
+
+        next: () => {
+
+          this.successMessage =
+            'User deleted successfully';
+
+          this.loadUsers();
+
+          this.closeDeleteModal();
+        },
+
+        error: () => {
+
+          this.errorMessage =
+            'Failed to delete user';
+
+          this.closeDeleteModal();
+        }
+      });
+  }
+  
+  loadDepartments(): void
+  {
+    this.departmentService
+      .getDepartments()
+      .subscribe({
+        next: (data) =>
+        {
+          this.departments = data;
+        }
+      });
+  }
+
+  // =========================
+  // CLEANUP
+  // =========================
+
+  ngOnDestroy(): void {
+    this.showModal = false;
+    this.showDeleteModal = false;
+    this.selectedUserId = null;
+    this.resetForm();
   }
 }

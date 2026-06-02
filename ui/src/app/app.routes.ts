@@ -5,6 +5,8 @@ import { DashboardComponent } from './pages/dashboard/dashboard';
 import { UserManagementComponent } from './pages/user-management/user-management';
 import { CommonDashboard } from './pages/common-dashboard/common-dashboard';
 import { QueryComponent } from './pages/query/query';
+import { DepartmentManagement } from './pages/department-management/department-management';
+import { RoutingRulesComponent } from './pages/routing-rules/routing-rules';
 
 import { AdminQueriesComponent } from './pages/admin-queries/admin-queries';
 
@@ -42,5 +44,13 @@ export const routes: Routes = [
   {
     path: 'query',
     component: QueryComponent
+  },
+  {
+  path: 'department-management',
+  component: DepartmentManagement
+  },
+  {
+    path: 'routing-rules',
+    component: RoutingRulesComponent
   }
 ];
