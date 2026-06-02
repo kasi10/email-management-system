@@ -1,5 +1,8 @@
-<div class="dashboard-page">
+<div class="dashboard-layout">
 
+  <!-- SIDEBAR -->
+
+<<<<<<< HEAD
   <!-- SIDEBAR -->
 
   <aside class="sidebar">
@@ -69,16 +72,104 @@
     <div
       *ngIf="successMessage"
       class="success-msg">
+=======
+  <aside class="sidebar">
+
+    <div>
+
+      <div class="logo">
+        TaxFlow AI
+      </div>
+
+      <nav class="nav-links">
+
+        <a routerLink="/dashboard" class="nav-item">
+
+          Dashboard
+
+        </a>
+
+        <a routerLink="/user-management" class="nav-item active">
+
+          Users
+
+        </a>
+
+        <a routerLink="/queries" class="nav-item">
+
+          Queries
+
+        </a>
+
+        <a routerLink="/department-management" class="nav-item">
+
+          Departments
+
+        </a>
+        <a routerLink="/routing-rules"  class="nav-item">
+        
+          Routing Rules
+        
+        </a>
+
+      </nav>
+
+    </div>
+
+    <button class="logout-btn" (click)="logout()">
+
+      Logout
+
+    </button>
+
+  </aside>
+
+  <!-- MAIN -->
+
+  <main class="main-content">
+
+    <!-- TOP -->
+
+    <section class="top-section">
+
+      <div>
+
+        <h1>
+          User Management
+        </h1>
+
+        <p>
+          Manage enterprise users and departments
+        </p>
+
+      </div>
+
+      <button class="add-btn" (click)="openModal()">
+
+        Add User
+
+      </button>
+
+    </section>
+
+    <!-- ALERTS -->
+
+    <div *ngIf="successMessage" class="success-msg">
+>>>>>>> feature/admin-workflow-management
 
       {{ successMessage }}
 
     </div>
 
+<<<<<<< HEAD
     <!-- ERROR -->
 
     <div
       *ngIf="errorMessage"
       class="error-msg">
+=======
+    <div *ngIf="errorMessage" class="error-msg">
+>>>>>>> feature/admin-workflow-management
 
       {{ errorMessage }}
 
@@ -86,7 +177,25 @@
 
     <!-- TABLE -->
 
+<<<<<<< HEAD
     <section class="table-card">
+=======
+    <section class="table-panel">
+
+      <div class="panel-header">
+
+        <h3>
+          System Users
+        </h3>
+
+        <span class="user-count">
+
+          {{ users.length }} Users
+
+        </span>
+
+      </div>
+>>>>>>> feature/admin-workflow-management
 
       <table>
 
@@ -104,6 +213,11 @@
 
             <th>Status</th>
 
+<<<<<<< HEAD
+=======
+            <th>Action</th>
+
+>>>>>>> feature/admin-workflow-management
           </tr>
 
         </thead>
@@ -113,6 +227,7 @@
           <tr *ngFor="let user of users">
 
             <td>
+<<<<<<< HEAD
               {{ user.username }}
             </td>
 
@@ -122,10 +237,22 @@
 
             <td>
               {{ user.role }}
+=======
+
+              {{ user.username }}
+
             </td>
 
             <td>
 
+              {{ user.displayName }}
+
+>>>>>>> feature/admin-workflow-management
+            </td>
+
+            <td>
+
+<<<<<<< HEAD
               <span *ngIf="user.departmentId === 1">
                 IRS Notices
               </span>
@@ -136,13 +263,29 @@
 
               <span *ngIf="!user.departmentId">
                 -
+=======
+              <span class="role-badge">
+
+                {{ user.role }}
+
+>>>>>>> feature/admin-workflow-management
               </span>
 
             </td>
 
             <td>
 
+<<<<<<< HEAD
               <span class="status active">
+=======
+              {{ user.department || '-' }}
+
+            </td>
+
+            <td>
+
+              <span class="active-badge">
+>>>>>>> feature/admin-workflow-management
 
                 Active
 
@@ -150,6 +293,19 @@
 
             </td>
 
+<<<<<<< HEAD
+=======
+            <td>
+
+              <button class="delete-btn" (click)="openDeleteModal(user.id)">
+
+                Delete
+
+              </button>
+
+            </td>
+
+>>>>>>> feature/admin-workflow-management
           </tr>
 
         </tbody>
@@ -160,18 +316,27 @@
 
   </main>
 
+<<<<<<< HEAD
   <!-- MODAL -->
 
   <div
     class="modal-overlay"
     [style.display]="showModal ? 'flex' : 'none'">
+=======
+  <!-- ADD USER MODAL -->
+
+  <div class="modal-overlay" *ngIf="showModal">
+>>>>>>> feature/admin-workflow-management
 
     <div class="modal-box">
 
-      <h2>Add User</h2>
+      <h2>
+        Add User
+      </h2>
 
       <!-- USERNAME -->
 
+<<<<<<< HEAD
       <input
         type="text"
         placeholder="Username"
@@ -259,6 +424,74 @@
       <div
         *ngIf="modalErrorMessage"
         class="error-msg">
+=======
+      <div class="input-group">
+
+        <label>
+          Username
+        </label>
+
+        <input type="text" placeholder="Enter username" [(ngModel)]="username"
+          [class.error-input]="modalErrorMessage" />
+
+      </div>
+
+      <!-- DISPLAY NAME -->
+
+      <div class="input-group">
+
+        <label>
+          Display Name
+        </label>
+
+        <input type="text" placeholder="Enter display name" [(ngModel)]="displayName"
+          [class.error-input]="modalErrorMessage" />
+
+      </div>
+
+      <!-- DEPARTMENT -->
+
+      <div class="input-group">
+
+        <label>
+          Department
+        </label>
+
+        <select [(ngModel)]="departmentId" [class.error-input]="modalErrorMessage">
+
+          <option [ngValue]="0" disabled>
+
+            Select Department
+
+          </option>
+
+          <option *ngFor="let department of departments" [ngValue]="department.departmentId">
+
+            {{ department.departmentName }}
+
+          </option>
+
+        </select>
+
+      </div>
+
+      <!-- PASSWORD -->
+
+      <div class="input-group">
+
+        <label>
+          Password
+        </label>
+
+        <input type="password" placeholder="Enter password" [(ngModel)]="password"
+          [class.error-input]="modalErrorMessage" />
+
+      </div>
+
+      <!-- ERROR -->
+
+      <div *ngIf="modalErrorMessage" class="error-msg">
+>>>>>>> feature/admin-workflow-management
 
         {{ modalErrorMessage }}
 
@@ -268,19 +501,63 @@
 
       <div class="modal-actions">
 
+<<<<<<< HEAD
         <button
           class="cancel-btn"
           (click)="closeModal()">
+=======
+        <button class="cancel-btn" (click)="closeModal()">
+>>>>>>> feature/admin-workflow-management
 
           Cancel
 
         </button>
 
+<<<<<<< HEAD
         <button
           class="save-btn"
           (click)="saveUser()">
 
           Save
+=======
+        <button class="save-btn" (click)="saveUser()">
+
+          Save User
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- DELETE MODAL -->
+
+  <div class="modal-overlay" *ngIf="showDeleteModal">
+
+    <div class="delete-modal">
+
+      <h2>
+        Delete User
+      </h2>
+
+      <p>
+        Are you sure you want to delete this user?
+      </p>
+
+      <div class="delete-actions">
+
+        <button class="cancel-btn" (click)="closeDeleteModal()">
+
+          Cancel
+
+        </button>
+
+        <button class="delete-confirm-btn" (click)="confirmDeleteUser()">
+
+          Delete
+>>>>>>> feature/admin-workflow-management
 
         </button>
 

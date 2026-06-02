@@ -2,7 +2,8 @@ import {
   Component,
   OnInit,
   ChangeDetectorRef,
-  AfterViewInit
+  AfterViewInit,
+  OnDestroy
 } from '@angular/core';
 
 import {
@@ -48,7 +49,7 @@ Chart.register(
   styleUrl: './common-dashboard.css'
 })
 export class CommonDashboard
-implements OnInit, AfterViewInit {
+implements OnInit, AfterViewInit, OnDestroy {
 
   queries: any[] = [];
 
@@ -373,5 +374,12 @@ implements OnInit, AfterViewInit {
   logout() {
 
     this.authService.logout();
+  }
+
+  ngOnDestroy(): void {
+    this.selectedQuery = null;
+    if (this.pieChart && typeof this.pieChart.destroy === 'function') {
+      try { this.pieChart.destroy(); } catch { /* ignore */ }
+    }
   }
 }

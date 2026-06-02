@@ -1,7 +1,8 @@
 import {
   Component,
   OnInit,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  OnDestroy
 } from '@angular/core';
 
 import {
@@ -34,7 +35,7 @@ import {
   styleUrl: './admin-queries.css',
 })
 export class AdminQueriesComponent
-implements OnInit {
+implements OnInit, OnDestroy {
 
   // ALL QUERIES
 
@@ -267,10 +268,6 @@ implements OnInit {
 
       next: () => {
 
-        alert(
-          'Query routed successfully'
-        );
-
         this.closeModal();
 
         this.loadQueries();
@@ -281,10 +278,6 @@ implements OnInit {
       error: (err) => {
 
         console.log(err);
-
-        alert(
-          'Routing failed'
-        );
       }
     });
   }
@@ -308,5 +301,9 @@ implements OnInit {
   logout() {
 
     this.authService.logout();
+  }
+
+  ngOnDestroy(): void {
+    this.selectedQuery = null;
   }
 }

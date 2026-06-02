@@ -25,7 +25,22 @@ export class QueryService {
       data
     );
   }
+<<<<<<< HEAD
 
+=======
+  // =========================
+// GET ALL QUERIES
+// =========================
+
+getQueries() {
+
+  return this.http.get<any[]>(
+
+    `${this.apiUrl}/admin`
+
+  );
+}
+>>>>>>> feature/admin-workflow-management
   // =========================
   // GET BY DEPARTMENT
   // =========================

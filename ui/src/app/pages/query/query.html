@@ -1,33 +1,82 @@
+<<<<<<< HEAD
 <div class="query-page">
 
   <!-- LOADING OVERLAY -->
 
   <div class="loading-overlay" *ngIf="isLoading">
+=======
+<div class="query-layout">
+
+  <!-- LOADING -->
+
+  <div
+    class="loading-overlay"
+    *ngIf="isLoading">
+>>>>>>> feature/admin-workflow-management
 
     <div class="loading-box">
 
       <div class="spinner"></div>
 
+<<<<<<< HEAD
       <h2>AI is classifying your query...</h2>
 
       <p>
         Please wait while we process your email
+=======
+      <h2>
+        Processing Your Query
+      </h2>
+
+      <p>
+        Please wait while we process your request
+>>>>>>> feature/admin-workflow-management
       </p>
 
     </div>
 
   </div>
 
+<<<<<<< HEAD
   <div class="query-card">
 
     <div class="top-actions">
 
       <button class="home-btn" (click)="goHome()">
         Home
+=======
+  <!-- CARD -->
+
+  <div class="query-container">
+
+    <!-- TOP -->
+
+    <div class="topbar">
+
+      <div>
+
+        <h1>
+          Submit Query
+        </h1>
+
+        <p>
+          AI-powered enterprise email routing
+        </p>
+
+      </div>
+
+      <button
+        class="home-btn"
+        (click)="goHome()">
+
+        Home
+
+>>>>>>> feature/admin-workflow-management
       </button>
 
     </div>
 
+<<<<<<< HEAD
     <h1>Submit Query</h1>
 
     <p class="subtitle">
@@ -78,6 +127,103 @@
       </span>
 
     </button>
+=======
+    <!-- ALERTS -->
+
+    <div
+      class="success-msg"
+      *ngIf="successMessage">
+
+      {{ successMessage }}
+
+    </div>
+
+    <div
+      class="error-msg"
+      *ngIf="errorMessage">
+
+      {{ errorMessage }}
+
+    </div>
+
+    <!-- FORM -->
+
+    <div class="form-section">
+
+      <!-- EMAIL -->
+
+      <div class="input-group">
+
+        <label>
+          Sender Email
+        </label>
+
+        <input
+          type="email"
+          [(ngModel)]="senderEmail"
+          placeholder="john@example.com"
+          [disabled]="isLoading"
+        />
+
+      </div>
+
+      <!-- SUBJECT -->
+
+      <div class="input-group">
+
+        <label>
+          Subject
+        </label>
+
+        <input
+          type="text"
+          [(ngModel)]="subject"
+          placeholder="Enter email subject"
+          [disabled]="isLoading"
+        />
+
+      </div>
+
+      <!-- BODY -->
+
+      <div class="input-group">
+
+        <label>
+          Email Body
+        </label>
+
+        <textarea
+          rows="10"
+          [(ngModel)]="body"
+          placeholder="Write your query details here..."
+          [disabled]="isLoading"
+        ></textarea>
+
+      </div>
+
+      <!-- BUTTON -->
+
+      <button
+        class="submit-btn"
+        (click)="submitQuery()"
+        [disabled]="isLoading">
+
+        <span *ngIf="!isLoading">
+
+          Submit Query
+
+        </span>
+
+        <span *ngIf="isLoading">
+
+          Processing...
+
+        </span>
+
+      </button>
+
+    </div>
+>>>>>>> feature/admin-workflow-management
 
   </div>
 

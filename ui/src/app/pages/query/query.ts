@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Component, ChangeDetectorRef } from '@angular/core';
+=======
+import { Component, ChangeDetectorRef, OnDestroy } from '@angular/core';
+>>>>>>> feature/admin-workflow-management
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -12,7 +16,11 @@ import { QueryService } from '../../query.service';
   templateUrl: './query.html',
   styleUrl: './query.css'
 })
+<<<<<<< HEAD
 export class QueryComponent {
+=======
+export class QueryComponent implements OnDestroy {
+>>>>>>> feature/admin-workflow-management
 
   senderEmail = '';
   subject = '';
@@ -35,19 +43,35 @@ export class QueryComponent {
       return;
     }
 
+<<<<<<< HEAD
     // Validation
+=======
+    /* VALIDATION */
+
+>>>>>>> feature/admin-workflow-management
     if (
       !this.senderEmail.trim() ||
       !this.subject.trim() ||
       !this.body.trim()
     ) {
 
+<<<<<<< HEAD
       this.errorMessage = 'All fields are mandatory';
+=======
+      this.errorMessage =
+        'All fields are required';
+
+>>>>>>> feature/admin-workflow-management
       this.successMessage = '';
 
       return;
     }
 
+<<<<<<< HEAD
+=======
+    /* START LOADING */
+
+>>>>>>> feature/admin-workflow-management
     this.isLoading = true;
 
     this.errorMessage = '';
@@ -64,16 +88,39 @@ export class QueryComponent {
 
       next: () => {
 
+<<<<<<< HEAD
+=======
+        /* RESET FORM */
+
+>>>>>>> feature/admin-workflow-management
         this.senderEmail = '';
         this.subject = '';
         this.body = '';
 
+<<<<<<< HEAD
+=======
+        /* SUCCESS */
+
+>>>>>>> feature/admin-workflow-management
         this.successMessage =
           'Query submitted successfully';
 
         this.isLoading = false;
 
         this.cdr.detectChanges();
+<<<<<<< HEAD
+=======
+
+        /* AUTO REMOVE MESSAGE */
+
+        setTimeout(() => {
+
+          this.successMessage = '';
+
+          this.cdr.detectChanges();
+
+        }, 3000);
+>>>>>>> feature/admin-workflow-management
       },
 
       error: (err) => {
@@ -86,6 +133,19 @@ export class QueryComponent {
         this.isLoading = false;
 
         this.cdr.detectChanges();
+<<<<<<< HEAD
+=======
+
+        /* AUTO REMOVE ERROR */
+
+        setTimeout(() => {
+
+          this.errorMessage = '';
+
+          this.cdr.detectChanges();
+
+        }, 3000);
+>>>>>>> feature/admin-workflow-management
       }
     });
   }
@@ -94,4 +154,15 @@ export class QueryComponent {
 
     this.router.navigate(['/']);
   }
+<<<<<<< HEAD
+=======
+  ngOnDestroy(): void {
+
+    this.isLoading = false;
+
+    this.successMessage = '';
+
+    this.errorMessage = '';
+  }
+>>>>>>> feature/admin-workflow-management
 }

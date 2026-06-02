@@ -77,8 +77,16 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 builder.Services.AddScoped<IQueryService, QueryService>();
 builder.Services.AddScoped<IQueryRepository, QueryRepository>();
+
+builder.Services.AddScoped<IDepartmentService,DepartmentService>();
+builder.Services.AddScoped<IDepartmentRepository,DepartmentRepository>();
+
+builder.Services.AddScoped<IRoutingRuleRepository,RoutingRuleRepository>();
+builder.Services.AddScoped<IRoutingRuleService,RoutingRuleService>();
+
 var app = builder.Build();
 
 // Pipeline

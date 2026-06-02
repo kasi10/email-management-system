@@ -131,6 +131,56 @@ Examples of ambiguous queries:
 - PAN verification for filing
 
 Such emails should usually require manual review.
+
+-----------------------------------
+INVALID / MEANINGLESS EMAILS
+-----------------------------------
+
+If the email:
+
+- contains only test text
+- contains random words
+- contains no meaningful business context
+- cannot be classified into a department
+
+return:
+
+{
+  "category": "Unknown",
+  "priority": "Low",
+  "department": "",
+  "confidenceScore": 0
+}
+
+Examples:
+
+Subject:
+test
+
+Body:
+test
+
+Output:
+{
+  "category": "Unknown",
+  "priority": "Low",
+  "department": "",
+  "confidenceScore": 0
+}
+
+Subject:
+Hello
+
+Body:
+Hello
+
+Output:
+{
+  "category": "Unknown",
+  "priority": "Low",
+  "department": "",
+  "confidenceScore": 0
+}
 -----------------------------------
 EXAMPLES
 -----------------------------------

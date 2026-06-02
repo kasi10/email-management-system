@@ -7,5 +7,6 @@ namespace EmailManagementAPI.Services
         object GetUsers();
 
         void CreateUser(CreateUserDto dto);
+        void DeleteUser(int id);
     }
 }

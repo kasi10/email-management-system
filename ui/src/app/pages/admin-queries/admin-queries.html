@@ -2,7 +2,10 @@
 
   <!-- SIDEBAR -->
 
-  <aside class="sidebar">
+ <aside class="sidebar">
+
+  <!-- ADD THIS WRAPPER DIV -->
+  <div>
 
     <div class="logo">
       TaxFlow AI
@@ -10,41 +13,42 @@
 
     <nav class="menu">
 
-      <a
-        routerLink="/dashboard"
-        class="menu-item">
-
+      <a routerLink="/dashboard" class="menu-item">
         Dashboard
+      </a>
 
+      <a routerLink="/user-management" class="menu-item">
+        User Management
+      </a>
+
+      <a routerLink="/queries" class="menu-item active">
+        Queries
       </a>
 
       <a
-        routerLink="/user-management"
+        routerLink="/department-management"
+        routerLinkActive="active"
         class="menu-item">
 
-        User Management
+        Departments
 
       </a>
-
-      <a
-        routerLink="/queries"
-        class="menu-item active">
-
-        Queries
-
+      <a routerLink="/routing-rules" routerLinkActive="active" class="menu-item">
+      
+        Routing Rules
+      
       </a>
 
     </nav>
 
-    <button
-      class="logout-btn"
-      (click)="logout()">
+  </div>
+  <!-- END WRAPPER DIV -->
 
-      Logout
+  <button class="logout-btn" (click)="logout()">
+    Logout
+  </button>
 
-    </button>
-
-  </aside>
+</aside>
 
   <!-- MAIN -->
 
@@ -166,12 +170,14 @@
 
             <td>
 
-              <span
-                class="priority"
-                [ngClass]="(query.priority || '').toLowerCase()">
-
+              <span *ngIf="!query.needsManualReview" class="priority" [ngClass]="(query.priority || '').toLowerCase()">
+              
                 {{ query.priority }}
-
+              
+              </span>
+              
+              <span *ngIf="query.needsManualReview">
+                -
               </span>
 
             </td>
@@ -189,15 +195,23 @@
             </td>
 
             <td>
-
-              {{ query.confidenceScore || 0 }}%
-
+            
+              {{
+              query.needsManualReview
+              ? '-'
+              : (query.confidenceScore || 0) + '%'
+              }}
+            
             </td>
 
             <td>
-
-              {{ query.assignedTeam }}
-
+            
+              {{
+              query.needsManualReview
+              ? 'Unassigned'
+              : query.assignedTeam
+              }}
+            
             </td>
 
             <td>
@@ -234,65 +248,54 @@
 
         <h2>Email Details</h2>
 
-        <button
-          class="close-btn"
-          (click)="closeModal()">
-
-          ✖
-
+        <button class="close-btn" (click)="closeModal()">
+        
+          ×
+        
         </button>
 
       </div>
 
       <div class="modal-content">
 
-        <p>
-
-          <strong>Sender:</strong>
-
-          {{ selectedQuery?.senderEmail }}
-
-        </p>
-
-        <p>
-
-          <strong>Subject:</strong>
-
-          {{ selectedQuery?.subject }}
-
-        </p>
-
-        <p>
-
-          <strong>Priority:</strong>
-
-          {{ selectedQuery?.priority }}
-
-        </p>
-
-        <p>
-
-          <strong>Status:</strong>
-
-          {{ selectedQuery?.status }}
-
-        </p>
-
-        <p>
-
-          <strong>AI Confidence:</strong>
-
-          {{ selectedQuery?.confidenceScore }}%
-
-        </p>
-
-        <p>
-
-          <strong>Assigned Team:</strong>
-
-          {{ selectedQuery?.assignedTeam }}
-
-        </p>
+        <div class="email-summary">
+        
+          <div class="sender-row">
+        
+            <span class="sender-label">
+              Sender
+            </span>
+        
+            <span class="sender-value">
+              {{ selectedQuery?.senderEmail }}
+            </span>
+        
+          </div>
+        
+          <div class="subject-row">
+          
+            <h2 class="email-subject">
+          
+              {{ selectedQuery?.subject }}
+          
+            </h2>
+          
+            <span *ngIf="!selectedQuery?.needsManualReview" class="priority-badge"
+              [ngClass]="(selectedQuery?.priority || '').toLowerCase()">
+            
+              {{ selectedQuery?.priority }}
+            
+            </span>
+            
+            <span *ngIf="selectedQuery?.needsManualReview" class="priority-badge">
+            
+              Manual Review
+            
+            </span>
+          
+          </div>
+        
+        </div>
 
         <!-- MANUAL ROUTING -->
 
@@ -329,14 +332,16 @@
 
         </div>
 
-        <hr>
-
-        <h3>Email Body</h3>
-
+        <div class="email-section-title">
+        
+          Email Message
+        
+        </div>
+        
         <div class="email-body">
-
+        
           {{ selectedQuery?.body }}
-
+        
         </div>
 
       </div>

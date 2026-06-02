@@ -1,9 +1,18 @@
-<div class="dashboard-page">
+<div class="dashboard-layout">
 
-  <aside class="sidebar">
-    <div class="logo">TaxFlow AI</div>
+ 
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+  <div>
+
+    <div class="logo">
+      TaxFlow AI
+    </div>
 
     <nav class="menu">
+<<<<<<< HEAD
 
   <a
     routerLink="/dashboard"
@@ -30,49 +39,281 @@
   </a>
 
 </nav>
+=======
+>>>>>>> feature/admin-workflow-management
 
-    <button class="logout-btn" (click)="logout()">Logout</button>
-  </aside>
+      <a
+        routerLink="/dashboard"
+        routerLinkActive="active"
+        class="menu-item">
+
+        Dashboard
+
+      </a>
+
+      <a
+        routerLink="/user-management"
+        routerLinkActive="active"
+        class="menu-item">
+
+        Users
+
+      </a>
+
+      <a
+        routerLink="/department-management"
+        routerLinkActive="active"
+        class="menu-item">
+
+        Departments
+
+      </a>
+
+      <a
+        routerLink="/queries"
+        routerLinkActive="active"
+        class="menu-item">
+
+        Queries
+
+      </a>
+      <a routerLink="/routing-rules" routerLinkActive="active" class="menu-item">
+      
+        Routing Rules
+      
+      </a>
+
+    </nav>
+
+  </div>
+
+  <button
+    class="logout-btn"
+    (click)="logout()">
+
+    Logout
+
+  </button>
+
+</aside>
+
+
+  <!-- MAIN -->
 
   <main class="main-content">
 
-    <div class="topbar">
-      <div>
-        <h1>Dashboard</h1>
-        <p>Overview of system users</p>
-      </div>
-    </div>
+    <!-- TOP -->
 
-    <section class="stat-card">
-      <h3>Total Users</h3>
-      <span>{{ users.length }}</span>
+    <section class="top-section">
+
+      <div>
+
+        <h1>
+          AI Operations
+        </h1>
+
+        <p>
+          Enterprise workflow management platform
+        </p>
+
+      </div>
+
+      <div class="admin-box">
+
+        <div class="admin-avatar">
+          A
+        </div>
+
+        <div class="admin-info">
+
+          <strong>
+            Administrator
+          </strong>
+
+          <small>
+            System Control
+          </small>
+
+        </div>
+
+      </div>
+
     </section>
 
-    <section class="table-card">
+    <!-- METRICS -->
 
-      <table>
+    <section class="metrics-row">
 
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Display Name</th>
-            <th>Role</th>
-            <th>Status</th>
-          </tr>
-        </thead>
+      <div class="metric-card">
 
-        <tbody>
-          <tr *ngFor="let user of users">
-            <td>{{ user.username }}</td>
-            <td>{{ user.displayName }}</td>
-            <td>{{ user.role }}</td>
-            <td><span class="status active">Active</span></td>
-          </tr>
-        </tbody>
+        <span class="metric-label">
+          Total Users
+        </span>
 
-      </table>
+        <h2>
+          {{ users.length }}
+        </h2>
+
+      </div>
+
+      <div class="metric-card">
+
+        <span class="metric-label">
+          Departments
+        </span>
+
+        <h2>
+          2
+        </h2>
+
+      </div>
+
+      <div class="metric-card">
+
+        <span class="metric-label">
+          Active Queries
+        </span>
+
+        <h2>
+          {{ activeQueries }}
+        </h2>
+
+      </div>
+
+      <div class="metric-card">
+
+        <span class="metric-label">
+          Manual Reviews
+        </span>
+
+        <h2>
+          {{ manualReviews }}
+        </h2>
+
+      </div>
+
+    </section>
+
+    <!-- CONTENT GRID -->
+
+    <section class="content-grid">
+
+      <!-- ACTIVITY PANEL -->
+
+      <div class="panel">
+
+        <div class="panel-header">
+
+          <h3>
+            Recent Activity
+          </h3>
+
+          <span class="status-pill">
+            Live
+          </span>
+
+        </div>
+
+        <div class="activity-list">
+
+          <div
+            class="activity-item"
+            *ngFor="let query of recentQueries">
+
+            <div
+              class="activity-dot"
+              [class.warning]="query.requiresManualReview">
+
+            </div>
+
+            <div>
+
+              <strong>
+
+                {{ query.subject }}
+
+              </strong>
+
+              <p>
+
+                {{ query.category }}
+                •
+                {{ query.priority }}
+
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- USERS PANEL -->
+
+      <div class="panel">
+
+        <div class="panel-header">
+
+          <h3>
+            System Users
+          </h3>
+
+        </div>
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>User</th>
+
+              <th>Role</th>
+
+              <th>Status</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <tr *ngFor="let user of users">
+
+              <td>
+
+                {{ user.username }}
+
+              </td>
+
+              <td>
+
+                {{ user.role }}
+
+              </td>
+
+              <td>
+
+                <span class="active-badge">
+
+                  Active
+
+                </span>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
 
     </section>
 
   </main>
+
 </div>
