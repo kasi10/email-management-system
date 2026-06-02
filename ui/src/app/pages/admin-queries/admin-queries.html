@@ -170,12 +170,14 @@
 
             <td>
 
-              <span
-                class="priority"
-                [ngClass]="(query.priority || '').toLowerCase()">
-
+              <span *ngIf="!query.needsManualReview" class="priority" [ngClass]="(query.priority || '').toLowerCase()">
+              
                 {{ query.priority }}
-
+              
+              </span>
+              
+              <span *ngIf="query.needsManualReview">
+                -
               </span>
 
             </td>
@@ -193,15 +195,23 @@
             </td>
 
             <td>
-
-              {{ query.confidenceScore || 0 }}%
-
+            
+              {{
+              query.needsManualReview
+              ? '-'
+              : (query.confidenceScore || 0) + '%'
+              }}
+            
             </td>
 
             <td>
-
-              {{ query.assignedTeam }}
-
+            
+              {{
+              query.needsManualReview
+              ? 'Unassigned'
+              : query.assignedTeam
+              }}
+            
             </td>
 
             <td>
@@ -270,10 +280,17 @@
           
             </h2>
           
-            <span class="priority-badge" [ngClass]="(selectedQuery?.priority || '').toLowerCase()">
-          
+            <span *ngIf="!selectedQuery?.needsManualReview" class="priority-badge"
+              [ngClass]="(selectedQuery?.priority || '').toLowerCase()">
+            
               {{ selectedQuery?.priority }}
-          
+            
+            </span>
+            
+            <span *ngIf="selectedQuery?.needsManualReview" class="priority-badge">
+            
+              Manual Review
+            
             </span>
           
           </div>

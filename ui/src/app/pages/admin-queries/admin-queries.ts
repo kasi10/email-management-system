@@ -268,10 +268,6 @@ implements OnInit, OnDestroy {
 
       next: () => {
 
-        alert(
-          'Query routed successfully'
-        );
-
         this.closeModal();
 
         this.loadQueries();
@@ -282,10 +278,6 @@ implements OnInit, OnDestroy {
       error: (err) => {
 
         console.log(err);
-
-        alert(
-          'Routing failed'
-        );
       }
     });
   }

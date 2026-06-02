@@ -89,14 +89,20 @@ namespace EmailManagementAPI.Services
             query.Priority =
                 result.Priority;
 
-            query.AssignedTeam =
-                result.Department;
+            query.ConfidenceScore = result.ConfidenceScore;
 
-            query.AssignedDepartmentId =
-                departmentId;
+            if (!result.NeedsManualReview)
+            {
+                query.AssignedTeam = result.Department;
 
-            query.ConfidenceScore =
-                result.ConfidenceScore;
+                query.AssignedDepartmentId = departmentId;
+            }
+            else
+            {
+                query.AssignedTeam = null;
+
+                query.AssignedDepartmentId = null;
+            }
 
             query.IsClassified =
                 true;

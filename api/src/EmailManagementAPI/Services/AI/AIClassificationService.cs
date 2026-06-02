@@ -31,37 +31,37 @@ namespace EmailManagementAPI.Services.AI
             _context = context;
         }
 
-        public async Task<QueryClassificationResult?>
-            ClassifyQuery(Query query)
+        public async Task<QueryClassificationResult?> ClassifyQuery(Query query)
         {
-            var apiKey =
-                _configuration["OpenRouter:ApiKey"];
-                Console.WriteLine("========== OPENROUTER KEY ==========");
-                Console.WriteLine(apiKey);
-                Console.WriteLine("====================================");
+            var matchingRule =
+    await FindMatchingRule(query);
+
+            if (matchingRule != null)
+            {
+                return new QueryClassificationResult
+                {
+                    Category = matchingRule.Keyword,
+
+                    Department =
+                        matchingRule.Department,
+
+                    Priority =
+                        matchingRule.Priority,
+
+                    ConfidenceScore = 100,
+
+                    NeedsManualReview = false
+                };
+            }
+            var apiKey = _configuration["OpenRouter:ApiKey"];
 
             // LOAD PROMPT
 
-            var promptPath = Path.Combine(
-                _environment.ContentRootPath,
-                "Prompts",
-                "classification_prompt.txt"
-            );
-
+            var promptPath = Path.Combine( _environment.ContentRootPath,"Prompts","classification_prompt.txt");
             var promptTemplate =
                 await File.ReadAllTextAsync(promptPath);
 
-            var prompt = promptTemplate
-                .Replace(
-                    "{{SUBJECT}}",
-                    query.Subject
-                )
-                .Replace(
-                    "{{BODY}}",
-                    query.Body
-                );
-
-            // REQUEST BODY
+            var prompt = promptTemplate.Replace("{{SUBJECT}}",query.Subject).Replace("{{BODY}}",query.Body);
 
             var requestBody = new
             {
@@ -80,55 +80,31 @@ namespace EmailManagementAPI.Services.AI
 
             // HTTP REQUEST
 
-            var request =
-                new HttpRequestMessage(
-                    HttpMethod.Post,
-                    "https://openrouter.ai/api/v1/chat/completions"
-                );
+            var request = new HttpRequestMessage( HttpMethod.Post,"https://openrouter.ai/api/v1/chat/completions");
+            request.Headers.Add("Authorization",$"Bearer {apiKey}");
 
-            request.Headers.Add(
-                "Authorization",
-                $"Bearer {apiKey}"
-            );
-
-            request.Content =
-                new StringContent(
-                    JsonSerializer.Serialize(requestBody),
-                    Encoding.UTF8,
-                    "application/json"
-                );
+            request.Content =new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8,"application/json");
 
             // CALL AI
 
-            var response =
-                await _httpClient.SendAsync(request);
+            var response =await _httpClient.SendAsync(request);
 
-            var responseString =
-                await response.Content
-                    .ReadAsStringAsync();
+            var responseString =await response.Content.ReadAsStringAsync();
 
-            Console.WriteLine(
-                "OPENROUTER RESPONSE:"
-            );
-
+            Console.WriteLine("OPENROUTER RESPONSE:");
             Console.WriteLine(responseString);
 
             if (!response.IsSuccessStatusCode)
             {
-                Console.WriteLine(
-                    "OPENROUTER REQUEST FAILED"
-                );
-
+                Console.WriteLine("OPENROUTER REQUEST FAILED");
                 return null;
             }
 
             // PARSE AI RESPONSE
 
-            using var document =
-                JsonDocument.Parse(responseString);
+            using var document = JsonDocument.Parse(responseString);
 
-            var text = document
-                .RootElement
+            var text = document.RootElement
                 .GetProperty("choices")[0]
                 .GetProperty("message")
                 .GetProperty("content")
@@ -139,61 +115,59 @@ namespace EmailManagementAPI.Services.AI
                 return null;
             }
 
-            text = text
-                .Replace("```json", "")
-                .Replace("```", "")
-                .Trim();
+            text = text.Replace("```json", "").Replace("```", "").Trim();
 
             try
             {
-                var result =
-                    JsonSerializer.Deserialize
-                    <QueryClassificationResult>(
-                        text,
-                        new JsonSerializerOptions
+                var result =JsonSerializer.Deserialize<QueryClassificationResult>(text,new JsonSerializerOptions
                         {
                             PropertyNameCaseInsensitive = true
-                        }
-                    );
+                        });
 
                 if (result == null)
                 {
                     return null;
                 }
+                if (string.IsNullOrWhiteSpace(result.Department))
+                {
+                    result.NeedsManualReview = true;
+                    return result;
+                }
+                
 
                 // MANUAL REVIEW LOGIC
-
-                result.NeedsManualReview =
-                    result.ConfidenceScore < 75;
-
+                result.NeedsManualReview = result.ConfidenceScore < 75 || string.IsNullOrWhiteSpace(result.Department);
                 return result;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(
-                    "JSON PARSE ERROR"
-                );
-
+                Console.WriteLine("JSON PARSE ERROR");
                 Console.WriteLine(ex.Message);
-
                 return null;
             }
+            
         }
 
         // MAP DEPARTMENT NAME → ID
 
-        public async Task<int?>
-            GetDepartmentId(string departmentName)
+        public async Task<int?> GetDepartmentId(string departmentName)
         {
-            var department =
-                await _context.Departments
-                    .FirstOrDefaultAsync(
-                        d =>
-                            d.DepartmentName ==
-                            departmentName
-                    );
-
+            var department =await _context.Departments.FirstOrDefaultAsync(d =>d.DepartmentName == departmentName);
             return department?.DepartmentId;
+        }
+        private async Task<RoutingRule?> FindMatchingRule(Query query)
+        {
+            var content =
+                $"{query.Subject} {query.Body}".ToLower();
+
+            var rules =
+                await _context.RoutingRules.ToListAsync();
+
+            return rules.FirstOrDefault(rule =>
+                content.Contains(
+                    rule.Keyword.ToLower()
+                )
+            );
         }
     }
 }

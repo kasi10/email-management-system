@@ -45,6 +45,9 @@
             </nav>
 
         </div>
+        <button class="logout-btn" (click)="logout()">
+            Logout
+        </button>
 
     </aside>
 
@@ -87,7 +90,7 @@
         </div>
 
         <section class="table-card">
-
+        
             <table>
 
                 <thead>
@@ -154,7 +157,19 @@
 
             <input type="text" placeholder="Keyword" [(ngModel)]="keyword">
 
-            <input type="text" placeholder="Department" [(ngModel)]="department">
+            <select [(ngModel)]="department">
+            
+                <option value="">
+                    Select Department
+                </option>
+            
+                <option *ngFor="let dept of departments" [value]="dept.departmentName">
+            
+                    {{ dept.departmentName }}
+            
+                </option>
+            
+            </select>
 
             <select [(ngModel)]="priority">
 

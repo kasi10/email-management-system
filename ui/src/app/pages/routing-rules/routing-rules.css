@@ -1,1 +1,42 @@
 @import "../department-management/department-management.css";
+select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    font-size: 14px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    background: white;
+    cursor: pointer;
+}
+
+select:focus {
+    outline: none;
+    border-color: #16a34a;
+}
+.dropdown-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.dropdown-row select {
+    flex: 1;
+}
+.logout-btn {
+    border: none;
+    background: #16a34a;
+    color: white;
+    padding: 14px;
+    border-radius: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.25s;
+    width: 100%;
+    font-size: 16px;
+}
+
+.logout-btn:hover {
+    background: #15803d;
+}
