@@ -1,78 +1,7 @@
-<div class="dashboard-layout">
+﻿<div class="dashboard-layout">
 
   <!-- SIDEBAR -->
 
-<<<<<<< HEAD
-  <!-- SIDEBAR -->
-
-  <aside class="sidebar">
-
-    <div class="logo">
-      TaxFlow AI
-    </div>
-
-    <nav class="menu">
-
-      <a
-        routerLink="/dashboard"
-        class="menu-item">
-
-        Dashboard
-
-      </a>
-
-      <a
-        routerLink="/user-management"
-        class="menu-item active">
-
-        User Management
-
-      </a>
-
-    </nav>
-
-    <button
-      class="logout-btn"
-      (click)="logout()">
-
-      Logout
-
-    </button>
-
-  </aside>
-
-  <!-- MAIN -->
-
-  <main class="main-content">
-
-    <div class="topbar">
-
-      <div>
-
-        <h1>User Management</h1>
-
-        <p>
-          Manage system users
-        </p>
-
-      </div>
-
-      <button
-        class="add-btn"
-        (click)="openModal()">
-
-        + Add User
-
-      </button>
-
-    </div>
-
-    <!-- SUCCESS -->
-
-    <div
-      *ngIf="successMessage"
-      class="success-msg">
-=======
   <aside class="sidebar">
 
     <div>
@@ -155,21 +84,12 @@
     <!-- ALERTS -->
 
     <div *ngIf="successMessage" class="success-msg">
->>>>>>> feature/admin-workflow-management
 
       {{ successMessage }}
 
     </div>
 
-<<<<<<< HEAD
-    <!-- ERROR -->
-
-    <div
-      *ngIf="errorMessage"
-      class="error-msg">
-=======
     <div *ngIf="errorMessage" class="error-msg">
->>>>>>> feature/admin-workflow-management
 
       {{ errorMessage }}
 
@@ -177,9 +97,6 @@
 
     <!-- TABLE -->
 
-<<<<<<< HEAD
-    <section class="table-card">
-=======
     <section class="table-panel">
 
       <div class="panel-header">
@@ -195,7 +112,6 @@
         </span>
 
       </div>
->>>>>>> feature/admin-workflow-management
 
       <table>
 
@@ -213,11 +129,8 @@
 
             <th>Status</th>
 
-<<<<<<< HEAD
-=======
             <th>Action</th>
 
->>>>>>> feature/admin-workflow-management
           </tr>
 
         </thead>
@@ -227,17 +140,6 @@
           <tr *ngFor="let user of users">
 
             <td>
-<<<<<<< HEAD
-              {{ user.username }}
-            </td>
-
-            <td>
-              {{ user.displayName }}
-            </td>
-
-            <td>
-              {{ user.role }}
-=======
 
               {{ user.username }}
 
@@ -247,37 +149,20 @@
 
               {{ user.displayName }}
 
->>>>>>> feature/admin-workflow-management
             </td>
 
             <td>
 
-<<<<<<< HEAD
-              <span *ngIf="user.departmentId === 1">
-                IRS Notices
-              </span>
-
-              <span *ngIf="user.departmentId === 2">
-                Doc Collections
-              </span>
-
-              <span *ngIf="!user.departmentId">
-                -
-=======
               <span class="role-badge">
 
                 {{ user.role }}
 
->>>>>>> feature/admin-workflow-management
               </span>
 
             </td>
 
             <td>
 
-<<<<<<< HEAD
-              <span class="status active">
-=======
               {{ user.department || '-' }}
 
             </td>
@@ -285,7 +170,6 @@
             <td>
 
               <span class="active-badge">
->>>>>>> feature/admin-workflow-management
 
                 Active
 
@@ -293,8 +177,6 @@
 
             </td>
 
-<<<<<<< HEAD
-=======
             <td>
 
               <button class="delete-btn" (click)="openDeleteModal(user.id)">
@@ -305,7 +187,6 @@
 
             </td>
 
->>>>>>> feature/admin-workflow-management
           </tr>
 
         </tbody>
@@ -316,17 +197,9 @@
 
   </main>
 
-<<<<<<< HEAD
-  <!-- MODAL -->
-
-  <div
-    class="modal-overlay"
-    [style.display]="showModal ? 'flex' : 'none'">
-=======
   <!-- ADD USER MODAL -->
 
   <div class="modal-overlay" *ngIf="showModal">
->>>>>>> feature/admin-workflow-management
 
     <div class="modal-box">
 
@@ -336,95 +209,6 @@
 
       <!-- USERNAME -->
 
-<<<<<<< HEAD
-      <input
-        type="text"
-        placeholder="Username"
-        [(ngModel)]="username"
-        [class.error-input]="modalErrorMessage"
-      />
-
-      <!-- DISPLAY NAME -->
-
-      <input
-        type="text"
-        placeholder="Display Name"
-        [(ngModel)]="displayName"
-        [class.error-input]="modalErrorMessage"
-      />
-
-      <!-- ROLE -->
-
-      <select
-        [(ngModel)]="role"
-        [class.error-input]="modalErrorMessage"
-      >
-
-        <option value="" disabled selected>
-
-          Select Role
-
-        </option>
-
-        <option value="Admin">
-
-          Admin
-
-        </option>
-
-        <option value="Employee">
-
-          Employee
-
-        </option>
-
-      </select>
-
-      <!-- DEPARTMENT -->
-
-      <select
-        *ngIf="role === 'Employee'"
-        [(ngModel)]="departmentId"
-        [class.error-input]="modalErrorMessage"
-      >
-
-        <option
-          [ngValue]="0"
-          disabled>
-
-          Select Department
-
-        </option>
-
-        <option [ngValue]="1">
-
-          IRS Notices
-
-        </option>
-
-        <option [ngValue]="2">
-
-          Doc Collections
-
-        </option>
-
-      </select>
-
-      <!-- PASSWORD -->
-
-      <input
-        type="password"
-        placeholder="Password"
-        [(ngModel)]="password"
-        [class.error-input]="modalErrorMessage"
-      />
-
-      <!-- ERROR -->
-
-      <div
-        *ngIf="modalErrorMessage"
-        class="error-msg">
-=======
       <div class="input-group">
 
         <label>
@@ -491,7 +275,6 @@
       <!-- ERROR -->
 
       <div *ngIf="modalErrorMessage" class="error-msg">
->>>>>>> feature/admin-workflow-management
 
         {{ modalErrorMessage }}
 
@@ -501,25 +284,12 @@
 
       <div class="modal-actions">
 
-<<<<<<< HEAD
-        <button
-          class="cancel-btn"
-          (click)="closeModal()">
-=======
         <button class="cancel-btn" (click)="closeModal()">
->>>>>>> feature/admin-workflow-management
 
           Cancel
 
         </button>
 
-<<<<<<< HEAD
-        <button
-          class="save-btn"
-          (click)="saveUser()">
-
-          Save
-=======
         <button class="save-btn" (click)="saveUser()">
 
           Save User
@@ -557,7 +327,6 @@
         <button class="delete-confirm-btn" (click)="confirmDeleteUser()">
 
           Delete
->>>>>>> feature/admin-workflow-management
 
         </button>
 

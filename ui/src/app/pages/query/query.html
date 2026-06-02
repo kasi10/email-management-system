@@ -1,50 +1,27 @@
-<<<<<<< HEAD
-<div class="query-page">
-
-  <!-- LOADING OVERLAY -->
-
-  <div class="loading-overlay" *ngIf="isLoading">
-=======
-<div class="query-layout">
+﻿<div class="query-layout">
 
   <!-- LOADING -->
 
   <div
     class="loading-overlay"
     *ngIf="isLoading">
->>>>>>> feature/admin-workflow-management
 
     <div class="loading-box">
 
       <div class="spinner"></div>
 
-<<<<<<< HEAD
-      <h2>AI is classifying your query...</h2>
-
-      <p>
-        Please wait while we process your email
-=======
       <h2>
         Processing Your Query
       </h2>
 
       <p>
         Please wait while we process your request
->>>>>>> feature/admin-workflow-management
       </p>
 
     </div>
 
   </div>
 
-<<<<<<< HEAD
-  <div class="query-card">
-
-    <div class="top-actions">
-
-      <button class="home-btn" (click)="goHome()">
-        Home
-=======
   <!-- CARD -->
 
   <div class="query-container">
@@ -71,63 +48,10 @@
 
         Home
 
->>>>>>> feature/admin-workflow-management
       </button>
 
     </div>
 
-<<<<<<< HEAD
-    <h1>Submit Query</h1>
-
-    <p class="subtitle">
-      Submit your tax-related email query
-    </p>
-
-    <div class="success-msg" *ngIf="successMessage">
-      {{ successMessage }}
-    </div>
-
-    <div class="error-msg" *ngIf="errorMessage">
-      {{ errorMessage }}
-    </div>
-
-    <input
-      type="email"
-      [(ngModel)]="senderEmail"
-      placeholder="Sender Email"
-      [disabled]="isLoading"
-    />
-
-    <input
-      type="text"
-      [(ngModel)]="subject"
-      placeholder="Subject"
-      [disabled]="isLoading"
-    />
-
-    <textarea
-      rows="10"
-      [(ngModel)]="body"
-      placeholder="Write your email body here..."
-      [disabled]="isLoading"
-    ></textarea>
-
-    <button
-      class="submit-btn"
-      (click)="submitQuery()"
-      [disabled]="isLoading"
-    >
-
-      <span *ngIf="!isLoading">
-        Send Query
-      </span>
-
-      <span *ngIf="isLoading">
-        Processing...
-      </span>
-
-    </button>
-=======
     <!-- ALERTS -->
 
     <div
@@ -223,7 +147,6 @@
       </button>
 
     </div>
->>>>>>> feature/admin-workflow-management
 
   </div>
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 
@@ -25,9 +25,6 @@ export class QueryService {
       data
     );
   }
-<<<<<<< HEAD
-
-=======
   // =========================
 // GET ALL QUERIES
 // =========================
@@ -40,7 +37,6 @@ getQueries() {
 
   );
 }
->>>>>>> feature/admin-workflow-management
   // =========================
   // GET BY DEPARTMENT
   // =========================
