@@ -16,7 +16,8 @@ import {
 } from '@angular/router';
 
 import {
-  HttpClient
+  HttpClient,
+  HttpHeaders
 } from '@angular/common/http';
 
 import {
@@ -35,7 +36,7 @@ import {
   styleUrl: './admin-queries.css',
 })
 export class AdminQueriesComponent
-implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy {
 
   // ALL QUERIES
 
@@ -63,12 +64,16 @@ implements OnInit, OnDestroy {
 
   activeTab = 'all';
 
+  // SUCCESS MESSAGE
+
+  successMessage = '';
+
   constructor(
     private http: HttpClient,
     private authService: AuthService,
     private router: Router,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
 
@@ -88,6 +93,22 @@ implements OnInit, OnDestroy {
   }
 
   // =========================
+  // AUTH HEADERS
+  // =========================
+
+  getHeaders() {
+
+    const token =
+      localStorage.getItem('token');
+
+    return {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${token}`
+      })
+    };
+  }
+
+  // =========================
   // LOAD ALL QUERIES
   // =========================
 
@@ -95,7 +116,8 @@ implements OnInit, OnDestroy {
 
     this.http
       .get<any[]>(
-        'http://localhost:5285/api/Queries/admin'
+        'http://localhost:5285/api/Queries/admin',
+        this.getHeaders()
       )
       .subscribe({
 
@@ -108,14 +130,17 @@ implements OnInit, OnDestroy {
 
           this.queries =
             Array.isArray(res)
-            ? [...res]
-            : [];
+              ? [...res]
+              : [];
 
           this.originalQueries =
             [...this.queries];
 
-          this.displayedQueries =
-            [...this.queries];
+          if (this.activeTab === 'all') {
+
+            this.displayedQueries =
+              [...this.queries];
+          }
 
           this.cdr.detectChanges();
         },
@@ -135,7 +160,8 @@ implements OnInit, OnDestroy {
 
     this.http
       .get<any[]>(
-        'http://localhost:5285/api/Queries/manual-review'
+        'http://localhost:5285/api/Queries/manual-review',
+        this.getHeaders()
       )
       .subscribe({
 
@@ -148,8 +174,8 @@ implements OnInit, OnDestroy {
 
           this.manualReviewQueries =
             Array.isArray(res)
-            ? [...res]
-            : [];
+              ? [...res]
+              : [];
 
           if (this.activeTab === 'review') {
 
@@ -198,8 +224,8 @@ implements OnInit, OnDestroy {
 
     const source =
       this.activeTab === 'all'
-      ? this.queries
-      : this.manualReviewQueries;
+        ? this.queries
+        : this.manualReviewQueries;
 
     this.displayedQueries =
       source.filter(q =>
@@ -262,17 +288,69 @@ implements OnInit, OnDestroy {
       {
         departmentId:
           Number(departmentId)
-      }
+      },
+
+      this.getHeaders()
 
     ).subscribe({
 
       next: () => {
 
+        // SUCCESS MESSAGE
+
+        this.successMessage =
+          'Query routed successfully';
+
+        setTimeout(() => {
+
+          this.successMessage = '';
+
+          this.cdr.detectChanges();
+
+        }, 3000);
+
+        // CLOSE MODAL
+
         this.closeModal();
 
-        this.loadQueries();
+        // REMOVE FROM MANUAL REVIEW
 
-        this.loadManualReviewQueries();
+        this.manualReviewQueries =
+          this.manualReviewQueries.filter(
+            q => q.id !== queryId
+          );
+
+        // UPDATE MAIN QUERY LIST
+
+        this.queries =
+          this.queries.map(q => {
+
+            if (q.id === queryId) {
+
+              return {
+                ...q,
+                status: 'Assigned',
+                needsManualReview: false
+              };
+            }
+
+            return q;
+          });
+
+        // REFRESH DISPLAY
+
+        if (this.activeTab === 'review') {
+
+          this.displayedQueries =
+            [...this.manualReviewQueries];
+        }
+        else {
+
+          this.displayedQueries =
+            [...this.queries];
+        }
+
+        this.cdr.detectChanges();
       },
 
       error: (err) => {
@@ -304,6 +382,7 @@ implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+
     this.selectedQuery = null;
   }
 }

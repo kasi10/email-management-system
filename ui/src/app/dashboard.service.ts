@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { HttpClient } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders
+} from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
@@ -14,14 +17,27 @@ export class DashboardService {
 
   constructor(
     private http: HttpClient
-  ) {}
+  ) { }
+
+  private getHeaders() {
+
+    const token =
+      localStorage.getItem('token');
+
+    return {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${token}`
+      })
+    };
+  }
 
   // USERS
 
   getUsers(): Observable<any[]> {
 
     return this.http.get<any[]>(
-      `${this.apiUrl}/users`
+      `${this.apiUrl}/users`,
+      this.getHeaders()
     );
   }
 
@@ -30,7 +46,8 @@ export class DashboardService {
   getQueries(): Observable<any[]> {
 
     return this.http.get<any[]>(
-      `${this.apiUrl}/queries/admin`
+      `${this.apiUrl}/queries/admin`,
+      this.getHeaders()
     );
   }
 }

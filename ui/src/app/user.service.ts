@@ -33,8 +33,16 @@ export class UserService {
 }
   deleteUser(id: number) {
 
+    const token =
+      localStorage.getItem('token');
+
     return this.http.delete(
-      `${this.apiUrl}/${id}`
+      `${this.apiUrl}/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
     );
   }
 }
