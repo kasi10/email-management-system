@@ -12,13 +12,17 @@ import {
   RouterModule
 } from '@angular/router';
 
-import { 
-  QueryService 
+import {
+  QueryService
 } from '../../query.service';
 
 import {
   UserService
 } from '../../user.service';
+
+import {
+  DepartmentService
+} from '../../department.service';
 
 import {
   AuthService
@@ -41,25 +45,27 @@ import {
 
 export class DashboardComponent {
 
+  // RECENT QUERIES
   recentQueries: any[] = [];
 
   // USERS
-
   users: any[] = [];
 
   // QUERIES
-
   queries: any[] = [];
 
+  // DEPARTMENTS
+  departments: any[] = [];
+
   // METRICS
-
   activeQueries = 0;
-
   manualReviews = 0;
 
   constructor(
 
     private userService: UserService,
+
+    private departmentService: DepartmentService,
 
     private authService: AuthService,
 
@@ -71,12 +77,11 @@ export class DashboardComponent {
 
     private cdr: ChangeDetectorRef
 
-  ) {}
+  ) { }
 
   ngOnInit() {
 
-    const token =
-      localStorage.getItem('token');
+    const token = localStorage.getItem('token');
 
     if (!token) {
 
@@ -86,7 +91,7 @@ export class DashboardComponent {
     }
 
     this.loadUsers();
-
+    this.loadDepartments();
     this.loadQueries();
   }
 
@@ -100,7 +105,10 @@ export class DashboardComponent {
 
         next: (res) => {
 
-          this.users = [...res];
+          // Exclude admin from dashboard metrics
+          this.users = res.filter(
+            user => user.role?.toLowerCase() !== 'admin'
+          );
 
           this.cdr.detectChanges();
         },
@@ -109,6 +117,31 @@ export class DashboardComponent {
 
           console.error(
             'Error fetching users:',
+            err
+          );
+        }
+      });
+  }
+
+  // LOAD DEPARTMENTS
+
+  loadDepartments() {
+
+    this.departmentService
+      .getDepartments()
+      .subscribe({
+
+        next: (res) => {
+
+          this.departments = res;
+
+          this.cdr.detectChanges();
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Error fetching departments:',
             err
           );
         }
@@ -126,26 +159,22 @@ export class DashboardComponent {
         next: (res) => {
 
           this.queries = [...res];
+
           this.recentQueries =
-          this.queries.slice(0, 3);
+            this.queries.slice(0, 3);
 
           // ACTIVE QUERIES
 
           this.activeQueries =
             this.queries.filter(
-
               q => q.status !== 'Finished'
-
             ).length;
 
           // MANUAL REVIEWS
 
           this.manualReviews =
             this.queries.filter(
-
-              q =>
-                q.requiresManualReview === true
-
+              q => q.requiresManualReview === true
             ).length;
 
           this.cdr.detectChanges();
@@ -167,4 +196,5 @@ export class DashboardComponent {
 
     this.authService.logout();
   }
+
 }

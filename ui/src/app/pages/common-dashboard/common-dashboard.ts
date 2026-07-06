@@ -61,6 +61,7 @@ implements OnInit, AfterViewInit, OnDestroy {
 
   pieChart: any;
 
+  activeQueries = 0;
   // NEW
 
   departmentId = 0;
@@ -118,11 +119,15 @@ implements OnInit, AfterViewInit, OnDestroy {
 
           this.queries =
             Array.isArray(res)
-            ? [...res]
-            : [];
+              ? [...res]
+              : [];
 
-          this.originalQueries =
-            [...this.queries];
+          this.originalQueries = [...this.queries];
+
+          // Count only active queries
+          this.activeQueries = this.queries.filter(
+            q => q.status !== 'Finished'
+          ).length;
 
           this.updateChart();
 
@@ -305,6 +310,8 @@ implements OnInit, AfterViewInit, OnDestroy {
 
   selectQuery(query: any) {
 
+    console.log("SELECTED QUERY:", query);
+
     this.selectedQuery = query;
   }
 
@@ -335,25 +342,11 @@ implements OnInit, AfterViewInit, OnDestroy {
 
         next: () => {
 
-          this.selectedQuery.status =
-            newStatus;
+          // Update selected query status
+          this.selectedQuery.status = newStatus;
 
-          const index =
-
-            this.queries.findIndex(
-
-              q =>
-                q.id ===
-                this.selectedQuery.id
-            );
-
-          if (index !== -1) {
-
-            this.queries[index].status =
-              newStatus;
-          }
-
-          this.updateChart();
+          // Reload latest data from database
+          this.loadQueries();
 
           console.log(
             'Status updated successfully'

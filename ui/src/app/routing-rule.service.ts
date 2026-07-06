@@ -18,13 +18,13 @@ export class RoutingRuleService {
 
     getRules(): Observable<any[]> {
         return this.http.get<any[]>(
-            this.apiUrl
+            `${this.apiUrl}/all`
         );
     }
 
     addRule(rule: any) {
         return this.http.post(
-            this.apiUrl,
+            `${this.apiUrl}/create`,
             rule
         );
     }

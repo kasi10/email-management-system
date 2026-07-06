@@ -121,7 +121,11 @@ implements OnInit, OnDestroy {
 
         next: (res) => {
 
-          this.users = [...res];
+          // Hide admin user from User Management
+
+          this.users = res.filter(
+            user => user.role?.toLowerCase() !== 'admin'
+          );
 
           this.cdr.detectChanges();
         },

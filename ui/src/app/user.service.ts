@@ -14,7 +14,7 @@ export class UserService {
   getUsers(): Observable<any[]> {
     const token = localStorage.getItem('token');
 
-    return this.http.get<any[]>(this.apiUrl, {
+    return this.http.get<any[]>(`${this.apiUrl}/all`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -24,7 +24,7 @@ export class UserService {
   createUser(user: any) {
   const token = localStorage.getItem('token');
 
-  return this.http.post<any>(this.apiUrl, user, {
+  return this.http.post<any>(`${this.apiUrl}/create`, user, {
     headers: {
       Authorization: `Bearer ${token}`
     },

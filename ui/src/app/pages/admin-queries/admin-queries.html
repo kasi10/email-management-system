@@ -138,7 +138,6 @@
             <th>Subject</th>
             <th>Priority</th>
             <th>Status</th>
-            <th>Confidence</th>
             <th>Assigned Team</th>
             <th>View</th>
 
@@ -185,15 +184,7 @@
 
             </td>
 
-            <td>
-
-              {{
-              query.needsManualReview
-              ? '-'
-              : (query.confidenceScore || 0) + '%'
-              }}
-
-            </td>
+            
 
             <td>
 
@@ -293,15 +284,17 @@
           </h3>
 
           <select #deptSelect>
-
-            <option value="1">
-              IRS Notices
+          
+            <option value="">
+              Select Department
             </option>
-
-            <option value="2">
-              Doc Collections
+          
+            <option *ngFor="let dept of departments" [value]="dept.departmentId">
+          
+              {{ dept.departmentName }}
+          
             </option>
-
+          
           </select>
 
           <button class="route-btn" (click)="manualRoute(

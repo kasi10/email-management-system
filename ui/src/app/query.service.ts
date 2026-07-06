@@ -21,7 +21,7 @@ export class QueryService {
   submitQuery(data: any) {
 
     return this.http.post(
-      this.apiUrl,
+      `${this.apiUrl}/create`,
       data
     );
   }

@@ -46,7 +46,6 @@ export class QueryComponent implements OnDestroy {
     ) {
 
 
-      this.errorMessage = 'All fields are mandatory';
 
       this.errorMessage =
         'All fields are required';

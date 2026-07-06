@@ -4,6 +4,9 @@ import {
   ChangeDetectorRef,
   OnDestroy
 } from '@angular/core';
+import {
+  DepartmentService
+} from '../../department.service';
 
 import {
   CommonModule,
@@ -49,6 +52,7 @@ export class AdminQueriesComponent
   // DISPLAYED TABLE
 
   displayedQueries: any[] = [];
+  departments: any[] = [];
 
   // SEARCH
 
@@ -70,6 +74,7 @@ export class AdminQueriesComponent
 
   constructor(
     private http: HttpClient,
+    private departmentService: DepartmentService,
     private authService: AuthService,
     private router: Router,
     private cdr: ChangeDetectorRef
@@ -90,6 +95,7 @@ export class AdminQueriesComponent
     this.loadQueries();
 
     this.loadManualReviewQueries();
+    this.loadDepartments();
   }
 
   // =========================
@@ -123,9 +129,13 @@ export class AdminQueriesComponent
 
         next: (res) => {
 
-          console.log(
-            'ADMIN QUERIES:',
-            res
+          console.table(
+            res.map(q => ({
+              id: q.id,
+              subject: q.subject,
+              status: q.status,
+              manual: q.needsManualReview
+            }))
           );
 
           this.queries =
@@ -191,6 +201,29 @@ export class AdminQueriesComponent
           console.log(err);
         }
       });
+  }
+  loadDepartments() {
+
+    this.departmentService
+      .getDepartments()
+      .subscribe({
+
+        next: (res) => {
+
+          this.departments = res;
+
+          this.cdr.detectChanges();
+
+        },
+
+        error: (err) => {
+
+          console.log(err);
+
+        }
+
+      });
+
   }
 
   // =========================

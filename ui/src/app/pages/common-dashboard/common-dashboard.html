@@ -2,7 +2,7 @@
 
   <div class="top-bar">
 
-    <h1>Common Dashboard</h1>
+    <h1>Employee Dashboard</h1>
 
     <button class="logout-btn" (click)="logout()">
       Logout
@@ -11,7 +11,7 @@
   </div>
 
   <div class="query-count">
-    Total Queries: {{ queries.length }}
+    Active Queries: {{ activeQueries }}
   </div>
 
   <!-- PIE CHART -->
@@ -23,15 +23,14 @@
     <canvas id="priorityChart"></canvas>
 
   </div>
+
+  <!-- SEARCH -->
+
   <div class="search-bar">
 
-  <input
-    type="text"
-    placeholder="Search emails..."
-    (input)="searchQueries($event)"
-  />
+    <input type="text" placeholder="Search emails..." (input)="searchQueries($event)" />
 
-</div>
+  </div>
 
   <!-- FILTER -->
 
@@ -78,15 +77,13 @@
 
         <td>{{ query.subject }}</td>
 
-        <td>{{ query.category }}</td>
+        <td>{{ query.category || 'Not Assigned' }}</td>
 
         <td>
 
-          <span
-            class="priority"
-            [ngClass]="query.priority.toLowerCase()">
+          <span class="priority" [ngClass]="(query.priority || '').toLowerCase()">
 
-            {{ query.priority }}
+            {{ query.priority || 'Not Assigned' }}
 
           </span>
 
@@ -94,9 +91,7 @@
 
         <td>
 
-          <span
-            class="status"
-            [ngClass]="query.status.toLowerCase()">
+          <span class="status" [ngClass]="(query.status || '').toLowerCase()">
 
             {{ query.status }}
 
@@ -104,13 +99,15 @@
 
         </td>
 
-        <td>{{ query.assignedTeam }}</td>
+        <td>
+
+          {{ query.assignedTeam || 'Not Assigned' }}
+
+        </td>
 
         <td>
 
-          <button
-            class="eye-btn"
-            (click)="selectQuery(query)">
+          <button class="eye-btn" (click)="selectQuery(query)">
 
             👁
 
@@ -126,9 +123,7 @@
 
   <!-- MODAL -->
 
-  <div
-    class="modal-overlay"
-    *ngIf="selectedQuery">
+  <div class="modal-overlay" *ngIf="selectedQuery">
 
     <div class="email-modal">
 
@@ -136,11 +131,9 @@
 
         <h2>Email Details</h2>
 
-        <button
-          class="close-btn"
-          (click)="closeModal()">
+        <button class="close-btn" (click)="closeModal()">
 
-          ✖
+          ✕
 
         </button>
 
@@ -148,59 +141,84 @@
 
       <div class="modal-content">
 
-        <p>
-          <strong>Sender:</strong>
-          {{ selectedQuery.senderEmail }}
-        </p>
+        <!-- Sender -->
 
-        <p>
-          <strong>Subject:</strong>
-          {{ selectedQuery.subject }}
-        </p>
+        <div class="sender-row">
 
-        <p>
-          <strong>Category:</strong>
-          {{ selectedQuery.category }}
-        </p>
+          <span class="sender-label">
 
-        <p>
-
-          <strong>Priority:</strong>
-
-          <span
-            class="priority"
-            [ngClass]="selectedQuery.priority.toLowerCase()">
-
-            {{ selectedQuery.priority }}
+            Sender
 
           </span>
 
-        </p>
+          <span class="sender-value">
 
-        <div class="status-section">
-
-          <strong>Status:</strong>
-
-          <span
-            class="status"
-            [ngClass]="selectedQuery.status.toLowerCase()">
-
-            {{ selectedQuery.status }}
+            {{ selectedQuery?.senderEmail }}
 
           </span>
 
         </div>
 
+        <!-- Subject -->
+
+        <div class="subject-row">
+
+          <h2 class="email-subject">
+
+            {{ selectedQuery?.subject }}
+
+          </h2>
+
+          <span class="priority-badge" [ngClass]="(selectedQuery?.priority || '').toLowerCase()">
+
+            {{ selectedQuery?.priority || 'Not Assigned' }}
+
+          </span>
+
+        </div>
+
+        <!-- Category -->
+
+        <div class="info-row">
+
+          <strong>Category</strong>
+
+          <span>
+
+            {{ selectedQuery?.category || 'Not Assigned' }}
+
+          </span>
+
+        </div>
+
+        <!-- Assigned Team -->
+
+        <div class="info-row">
+
+          <strong>Assigned Team</strong>
+
+          <span>
+
+            {{ selectedQuery?.assignedTeam || 'Not Assigned' }}
+
+          </span>
+
+        </div>
+
+        <!-- Status -->
+
         <div class="status-update">
 
-          <label>Update Status:</label>
+          <label>
 
-          <select
-            [value]="selectedQuery.status"
-            (change)="updateStatus($event)">
+            Update Status
 
-            <option value="Pending">
-              Pending
+          </label>
+
+          <select [value]="selectedQuery?.status" (change)="updateStatus($event)">
+
+            <option value="Assigned">
+              Assigned
             </option>
 
             <option value="In Progress">
@@ -215,18 +233,15 @@
 
         </div>
 
-        <p>
-          <strong>Assigned Team:</strong>
-          {{ selectedQuery.assignedTeam }}
-        </p>
+        <div class="email-section-title">
 
-        <hr>
+          Email Message
 
-        <h3>Email Body</h3>
+        </div>
 
         <div class="email-body">
 
-          {{ selectedQuery.body }}
+          {{ selectedQuery?.body }}
 
         </div>
 

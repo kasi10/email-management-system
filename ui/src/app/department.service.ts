@@ -20,7 +20,7 @@ export class DepartmentService {
     Observable<any[]>
   {
     return this.http.get<any[]>(
-      this.apiUrl
+      `${this.apiUrl}/all`
     );
   }
 
@@ -29,7 +29,7 @@ export class DepartmentService {
   ): Observable<any>
   {
     return this.http.post(
-      this.apiUrl,
+      `${this.apiUrl}/create`,
       department
     );
   }
