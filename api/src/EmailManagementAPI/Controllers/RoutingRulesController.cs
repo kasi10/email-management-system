@@ -28,7 +28,7 @@ namespace EmailManagementAPI.Controllers
         // GET RULES
         // =====================
 
-        [HttpGet]
+        [HttpGet("all")]
 
         public IActionResult GetRules()
         {
@@ -43,7 +43,7 @@ namespace EmailManagementAPI.Controllers
         // ADD RULE
         // =====================
 
-        [HttpPost]
+        [HttpPost("create")]
 
         public IActionResult AddRule(
             RoutingRule rule

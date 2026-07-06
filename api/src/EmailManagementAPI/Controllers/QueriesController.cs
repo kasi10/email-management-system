@@ -20,7 +20,7 @@ namespace EmailManagementAPI.Controllers
         // CREATE QUERY
         // =========================
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult>
             CreateQuery(CreateQueryDto dto)
         {

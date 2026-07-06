@@ -17,7 +17,7 @@ namespace EmailManagementAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpGet("all")]
         public IActionResult GetUsers()
         {
             try
@@ -33,7 +33,7 @@ namespace EmailManagementAPI.Controllers
 
         // 🔥 ADD THIS
         [Authorize]
-        [HttpPost]
+        [HttpPost("create")]
         public IActionResult CreateUser(CreateUserDto dto)
         {
             try

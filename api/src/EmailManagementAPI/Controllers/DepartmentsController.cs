@@ -20,7 +20,7 @@ namespace EmailManagementAPI.Controllers
                 departmentService;
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<
             ActionResult<IEnumerable<Department>>>
             GetDepartments()
@@ -32,7 +32,7 @@ namespace EmailManagementAPI.Controllers
             return Ok(departments);
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<
             ActionResult<Department>>
             AddDepartment(
